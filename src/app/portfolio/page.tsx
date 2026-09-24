@@ -8,6 +8,7 @@ import ProjectCard from '@/components/ProjectCard';
 import RotatingTitle from '@/components/RotatingTitle';
 import SkillBadges from '@/components/SkillBadges';
 import SmoothScroll from '@/components/SmoothScroll';
+import StatusBar from '@/components/StatusBar';
 import ThemeToggle from '@/components/ThemeToggle';
 import VisitorCounter from '@/components/VisitorCounter';
 import { blogs } from '@/data/blogs';
@@ -18,19 +19,20 @@ import { useEffect, useState, type ReactNode } from 'react';
 
 const CALENDLY_URL = 'https://calendly.com/pratyaksh-krish/30min';
 const RESUME_URL = '/resume.pdf';
+const PILL_BUTTON = 'inline-flex items-center gap-2 rounded-full border border-white/15 hover:border-white/30 bg-black/35 hover:bg-black/50 backdrop-blur-md px-4 py-2 text-sm text-white/80 hover:text-white transition-colors';
 
 function Row({ children, className = '' }: { children: ReactNode; className?: string }) {
     return (
-        <div className="border-b border-theme-divider">
-            <div className={`plus-marks max-w-5xl mx-auto border-x border-theme-divider bg-page ${className}`}>{children}</div>
+        <div className="border-b border-white/15">
+            <div className={`plus-marks max-w-2xl mx-auto border-x border-white/15 bg-page/90 backdrop-blur-xl ${className}`}>{children}</div>
         </div>
     );
 }
 
-function Band({ className = 'h-12 md:h-16' }: { className?: string }) {
+function Band({ className = 'h-12 md:h-16', children }: { className?: string; children?: ReactNode }) {
     return (
-        <div className="border-b border-theme-divider">
-            <div className={`plus-marks max-w-5xl mx-auto border-x border-theme-divider ${className}`} />
+        <div className="border-b border-white/15">
+            <div className={`plus-marks max-w-2xl mx-auto border-x border-white/15 ${className}`}>{children}</div>
         </div>
     );
 }
@@ -64,7 +66,9 @@ export default function PortfolioPage() {
 
     return (
         <SmoothScroll>
-            <div className="blueprint min-h-screen text-page-text overflow-y-auto overflow-x-hidden relative z-[2]" style={geistMonoFont}>
+            <div className="min-h-screen text-page-text overflow-y-auto overflow-x-hidden relative z-[2]" style={geistMonoFont}>
+                <div aria-hidden className="fixed inset-0 -z-10 bg-cover bg-center" style={{ backgroundImage: 'url(/images/background.jpg)' }} />
+                <div aria-hidden className="fixed inset-0 -z-10 bg-black/30" />
                 <main
                     className="relative transition-all duration-700 ease-out"
                     style={{
@@ -73,20 +77,22 @@ export default function PortfolioPage() {
                         transform: isLoaded ? 'scale(1)' : 'scale(1.02)',
                     }}
                 >
-                    <Band className="h-20 md:h-28" />
+                    <Band className="h-20 md:h-28">
+                        <StatusBar />
+                    </Band>
 
-                    <Row className="px-6 md:px-10 py-8 md:py-10">
-                        <div className="flex flex-col md:flex-row md:items-center gap-6 md:gap-8">
-                            <div className="flex items-center gap-5 md:gap-6 flex-1 min-w-0">
+                    <Row className="px-6 md:px-8 py-8 md:py-10">
+                        <div className="flex flex-col sm:flex-row sm:items-center gap-6">
+                            <div className="flex items-center gap-5 flex-1 min-w-0">
                                 <div className="shrink-0 p-1 rounded-2xl border border-theme-divider bg-theme-card">
                                     <img
                                         src="/images/avatar.jpg"
                                         alt="Pratyaksh Krishnna"
-                                        className="w-24 h-24 md:w-28 md:h-28 rounded-xl object-cover"
+                                        className="w-20 h-20 md:w-24 md:h-24 rounded-xl object-cover"
                                     />
                                 </div>
                                 <div className="flex flex-col min-w-0">
-                                    <h1 className="text-2xl md:text-3xl text-theme-primary tracking-wide mb-1" style={headingFont}>
+                                    <h1 className="text-2xl md:text-[1.7rem] text-theme-primary tracking-wide whitespace-nowrap mb-1" style={headingFont}>
                                         Pratyaksh Krishnna
                                     </h1>
                                     <RotatingTitle />
@@ -105,7 +111,7 @@ export default function PortfolioPage() {
                                 </div>
                             </div>
 
-                            <div className="flex md:flex-col items-center md:items-end justify-between md:justify-center gap-4">
+                            <div className="flex sm:flex-col items-center sm:items-end justify-between sm:justify-center gap-4">
                                 <div className="flex items-center gap-3">
                                     <VisitorCounter />
                                     <ThemeToggle />
@@ -114,8 +120,9 @@ export default function PortfolioPage() {
                                     href={CALENDLY_URL}
                                     target="_blank"
                                     rel="noopener noreferrer"
-                                    className="group inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-blue-600 hover:bg-blue-500 text-white text-sm font-medium shadow-[0_0_0_1px_rgba(96,165,250,0.4),0_6px_20px_-6px_rgba(37,99,235,0.6)] transition-colors"
+                                    className={`group ${PILL_BUTTON}`}
                                 >
+                                    <span className="h-2 w-2 shrink-0 rounded-full bg-blue-400 shadow-[0_0_8px_rgba(96,165,250,0.8)]" aria-hidden />
                                     Hire me
                                     <svg className="w-3.5 h-3.5 transition-transform duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 17L17 7M17 7H7M17 7v10" />
@@ -125,17 +132,17 @@ export default function PortfolioPage() {
                         </div>
                     </Row>
 
-                    <Row className="px-6 md:px-10 py-12 md:py-16">
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-14">
-                            <div className="flex flex-col items-start gap-6">
+                    <Row className="px-6 md:px-8 py-12 md:py-16">
+                        <div className="flex flex-col gap-8">
+                            <div className="flex flex-col items-start gap-5">
                                 <h2 className="text-2xl md:text-[1.75rem] leading-snug text-theme-primary tracking-tight" style={headingFont}>
-                                    Building AI-native products, from zero to one.
+                                    Building AI-native products, from prototype to production.
                                 </h2>
                                 <a
                                     href={RESUME_URL}
                                     target="_blank"
                                     rel="noopener noreferrer"
-                                    className="group inline-flex items-center gap-2 px-4 py-2 rounded-lg border border-theme-card-border hover:border-theme-card-hover-border bg-theme-card hover:bg-theme-card-hover text-theme-badge-text hover:text-theme-primary text-sm font-medium transition-colors"
+                                    className={`group ${PILL_BUTTON}`}
                                 >
                                     <svg className="w-4 h-4 transition-transform duration-200 group-hover:translate-y-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
@@ -145,19 +152,33 @@ export default function PortfolioPage() {
                             </div>
                             <div className="text-theme-secondary text-[15px] leading-7 space-y-4">
                                 <p>
-                                    <span className="text-theme-primary">AI-native software engineer</span> who builds
-                                    full-stack applications and agentic systems, including{' '}
-                                    <span className="text-theme-primary">multi-agent workflows</span> and{' '}
-                                    <span className="text-theme-primary">RAG pipelines</span>.
+                                    I&apos;m an <span className="text-theme-primary">AI engineer</span> focused on building
+                                    intelligent systems that are{' '}
+                                    <span className="text-theme-primary">useful beyond the demo stage</span>.
                                 </p>
                                 <p>
-                                    I take products from <span className="text-theme-primary">zero to one</span>: I turn
-                                    ambiguous problems into clear requirements, sound system designs, and
-                                    production-ready software.
+                                    My work spans <span className="text-theme-primary">RAG</span>,{' '}
+                                    <span className="text-theme-primary">AI agents</span>,{' '}
+                                    <span className="text-theme-primary">multi-agent workflows</span>, backend systems, and
+                                    full-stack product development.
                                 </p>
                                 <p>
-                                    AI speeds up how I build. Product judgment, architecture, code quality, and
-                                    maintainability <span className="text-theme-primary">stay with me</span>.
+                                    I enjoy turning messy real-world problems into reliable architectures, retrieval
+                                    pipelines, and <span className="text-theme-primary">production-ready applications</span>.
+                                </p>
+                                <p>
+                                    I work across Python, TypeScript, Node.js, React, PostgreSQL, pgvector, LangChain, and
+                                    LangGraph.
+                                </p>
+                                <p>
+                                    I&apos;m especially interested in{' '}
+                                    <span className="text-theme-primary">agentic systems</span>, AI infrastructure,
+                                    retrieval, evaluation, and building software that can reason over complex data.
+                                </p>
+                                <p>
+                                    I care about understanding how systems work end to end, making thoughtful engineering
+                                    decisions, and shipping products that are{' '}
+                                    <span className="text-theme-primary">fast, reliable, and maintainable</span>.
                                 </p>
                             </div>
                         </div>
@@ -165,7 +186,7 @@ export default function PortfolioPage() {
 
                     <Band />
 
-                    <Row className="px-6 md:px-10 py-12">
+                    <Row className="px-6 md:px-8 py-12">
                         <section id="experience">
                             <h2 className="text-2xl mb-8 tracking-wider" style={headingFont}>Experience</h2>
                             <ExperienceTimeline items={experience} />
@@ -174,14 +195,14 @@ export default function PortfolioPage() {
 
                     <Band />
 
-                    <Row className="px-6 md:px-10 py-12">
+                    <Row className="px-6 md:px-8 py-12">
                         <h2 className="text-2xl mb-8 tracking-wider" style={headingFont}>Skills</h2>
                         <SkillBadges />
                     </Row>
 
                     <Band />
 
-                    <Row className="px-6 md:px-10 py-12">
+                    <Row className="px-6 md:px-8 py-12">
                         <section id="projects">
                             <h2 className="text-2xl mb-8 tracking-wider" style={headingFont}>Projects</h2>
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
@@ -195,7 +216,7 @@ export default function PortfolioPage() {
 
                     <Band />
 
-                    <Row className="px-6 md:px-10 py-12">
+                    <Row className="px-6 md:px-8 py-12">
                         <section>
                             <h2 className="text-2xl mb-8 tracking-wider" style={headingFont}>Stats</h2>
                             <GitHubContributions username="pratyaksh-krishnna" />
@@ -206,7 +227,7 @@ export default function PortfolioPage() {
                         <>
                             <Band />
 
-                            <Row className="px-6 md:px-10 py-12">
+                            <Row className="px-6 md:px-8 py-12">
                                 <section id="blog">
                                     <h2 className="text-2xl mb-8 tracking-wider" style={headingFont}>Blogs</h2>
                                     <div className="space-y-4">

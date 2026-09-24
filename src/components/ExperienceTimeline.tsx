@@ -45,7 +45,7 @@ export default function ExperienceTimeline({ items }: { items: Experience[] }) {
                 const isLast = index === items.length - 1;
 
                 return (
-                    <li key={item.id} className="relative pl-9 md:pl-10 pb-10 last:pb-0">
+                    <li key={item.id} className="group relative pl-9 md:pl-10 pb-10 last:pb-0">
                         {!isLast && (
                             <span className="absolute left-[7px] top-5 bottom-0 w-px bg-theme-divider" aria-hidden />
                         )}
@@ -57,17 +57,19 @@ export default function ExperienceTimeline({ items }: { items: Experience[] }) {
                                     <span className="relative h-[15px] w-[15px] rounded-full bg-blue-500 ring-4 ring-blue-500/20" />
                                 </>
                             ) : (
-                                <span className="h-[11px] w-[11px] rounded-full border-2 border-theme-muted bg-page" />
+                                <span className="h-[11px] w-[11px] rounded-full border-2 border-theme-muted bg-page transition-colors duration-300 group-hover:border-theme-primary" />
                             )}
                         </span>
 
-                        <div className="flex gap-4">
-                            <CompanyLogo item={item} />
+                        <div className="flex gap-4 -mx-3 -my-2 px-3 py-2 rounded-xl border border-transparent transition-colors duration-300 group-hover:bg-theme-card group-hover:border-theme-card-border">
+                            <div className="shrink-0 self-start transition-transform duration-500 group-hover:scale-110">
+                                <CompanyLogo item={item} />
+                            </div>
                             <div className="min-w-0 flex-1">
                                 <div className="flex flex-wrap items-center gap-x-2 gap-y-1">
-                                    <h3 className="text-base text-theme-primary font-medium" style={{ fontFamily: 'inherit' }}>{item.role}</h3>
+                                    <h3 className="text-base text-theme-primary font-medium origin-left transition-transform duration-300 group-hover:scale-[1.08] group-hover:text-theme-icon-hover" style={{ fontFamily: 'inherit' }}>{item.role}</h3>
                                     {isCurrent && (
-                                        <span className="text-[11px] px-2 py-0.5 rounded-full bg-blue-500/15 text-blue-400 border border-blue-500/30">
+                                        <span className="ml-2 text-[11px] px-2 py-0.5 rounded-full bg-blue-500/15 text-blue-400 border border-blue-500/30">
                                             Current
                                         </span>
                                     )}

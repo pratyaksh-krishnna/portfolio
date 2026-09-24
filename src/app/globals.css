@@ -24,8 +24,7 @@
   --theme-avatar-shadow: 0 0 20px rgba(255, 255, 255, 0.2), 0 0 40px rgba(255, 255, 255, 0.1);
   --theme-gradient-overlay: rgba(0, 0, 0, 1);
   --theme-icon-hover: #ffffff;
-  --theme-grid: rgba(255, 255, 255, 0.045);
-  --theme-grid-mark: rgba(255, 255, 255, 0.45);
+  --theme-grid-mark: rgba(255, 255, 255, 0.55);
 }
 
 .light {
@@ -50,8 +49,7 @@
   --theme-avatar-shadow: 0 0 20px rgba(0, 0, 0, 0.15), 0 0 40px rgba(0, 0, 0, 0.08);
   --theme-gradient-overlay: rgba(250, 250, 250, 1);
   --theme-icon-hover: #000000;
-  --theme-grid: rgba(0, 0, 0, 0.05);
-  --theme-grid-mark: rgba(0, 0, 0, 0.4);
+  --theme-grid-mark: rgba(255, 255, 255, 0.55);
 }
 
 @theme {
@@ -314,15 +312,6 @@
 .scrollbar-hide {
   -ms-overflow-style: none;
   scrollbar-width: none;
-}
-
-/* Blueprint grid for page gutters and section bands */
-.blueprint {
-  background-image:
-    linear-gradient(to right, var(--theme-grid) 1px, transparent 1px),
-    linear-gradient(to bottom, var(--theme-grid) 1px, transparent 1px);
-  background-size: 24px 24px;
-  background-position: center top;
 }
 
 /* "+" crosshairs where the column edges meet a section line */
