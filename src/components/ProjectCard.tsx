@@ -56,7 +56,12 @@ export default function ProjectCard({ project, compact = false }: ProjectCardPro
             </div>
             <div className="p-4">
                 <div className="mb-2">
-                    <p className="project-title font-medium text-theme-primary group-hover:text-theme-icon-hover">{project.title}</p>
+                    <p
+                        className="project-title tracking-tight text-theme-primary group-hover:text-theme-icon-hover"
+                        style={{ fontFamily: "var(--font-geist-mono), 'Geist Mono', monospace", fontWeight: 600 }}
+                    >
+                        {project.title}
+                    </p>
                 </div>
                 <p className="text-sm text-theme-muted mb-3">{project.description}</p>
                 <div className="flex flex-wrap gap-2">

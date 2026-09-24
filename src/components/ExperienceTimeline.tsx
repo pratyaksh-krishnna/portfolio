@@ -1,3 +1,6 @@
+'use client';
+
+import { useState } from 'react';
 import type { Experience } from '@/data/experience';
 
 const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
@@ -38,11 +41,15 @@ function CompanyLogo({ item }: { item: Experience }) {
 }
 
 export default function ExperienceTimeline({ items }: { items: Experience[] }) {
+    const [expanded, setExpanded] = useState<Record<string, boolean>>({});
+    const toggle = (id: string) => setExpanded((prev) => ({ ...prev, [id]: !prev[id] }));
+
     return (
         <ol className="relative">
             {items.map((item, index) => {
                 const isCurrent = item.end === 'Present';
                 const isLast = index === items.length - 1;
+                const isOpen = !!expanded[item.id];
 
                 return (
                     <li key={item.id} className="group relative pl-9 md:pl-10 pb-10 last:pb-0">
@@ -82,14 +89,38 @@ export default function ExperienceTimeline({ items }: { items: Experience[] }) {
                                 </p>
 
                                 {item.highlights.length > 0 && (
-                                    <ul className="mt-4 space-y-2 text-sm leading-6 text-theme-secondary">
-                                        {item.highlights.map((highlight) => (
-                                            <li key={highlight} className="flex gap-2.5">
-                                                <span className="mt-[9px] h-1 w-1 shrink-0 rounded-full bg-theme-muted" aria-hidden />
-                                                <span>{highlight}</span>
-                                            </li>
-                                        ))}
-                                    </ul>
+                                    <>
+                                        <div
+                                            id={`experience-${item.id}-details`}
+                                            className={`grid transition-[grid-template-rows,opacity] duration-300 ease-out ${isOpen ? 'grid-rows-[1fr] opacity-100' : 'grid-rows-[0fr] opacity-0'}`}
+                                        >
+                                            <ul className="overflow-hidden space-y-2 text-sm leading-6 text-theme-secondary" inert={!isOpen}>
+                                                {item.highlights.map((highlight, i) => (
+                                                    <li key={highlight} className={`flex gap-2.5 ${i === 0 ? 'mt-4' : ''}`}>
+                                                        <span className="mt-[9px] h-1 w-1 shrink-0 rounded-full bg-theme-muted" aria-hidden />
+                                                        <span>{highlight}</span>
+                                                    </li>
+                                                ))}
+                                            </ul>
+                                        </div>
+                                        <button
+                                            type="button"
+                                            onClick={() => toggle(item.id)}
+                                            aria-expanded={isOpen}
+                                            aria-controls={`experience-${item.id}-details`}
+                                            className="mt-3 inline-flex items-center gap-1 text-xs font-medium text-theme-secondary hover:text-theme-primary transition-colors cursor-pointer"
+                                        >
+                                            {isOpen ? 'Show less' : 'Show more'}
+                                            <svg
+                                                className={`h-3.5 w-3.5 transition-transform duration-300 ${isOpen ? 'rotate-180' : ''}`}
+                                                viewBox="0 0 20 20"
+                                                fill="currentColor"
+                                                aria-hidden
+                                            >
+                                                <path fillRule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.17l3.71-3.94a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z" clipRule="evenodd" />
+                                            </svg>
+                                        </button>
+                                    </>
                                 )}
 
                                 {item.tags.length > 0 && (
