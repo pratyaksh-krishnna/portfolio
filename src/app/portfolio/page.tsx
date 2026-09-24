@@ -2,6 +2,7 @@
 
 import AgeCounter from '@/components/AgeCounter';
 import BlogCard from '@/components/BlogCard';
+import ExperienceTimeline from '@/components/ExperienceTimeline';
 import GitHubContributions from '@/components/GitHubContributions';
 import ProjectCard from '@/components/ProjectCard';
 import RotatingTitle from '@/components/RotatingTitle';
@@ -10,6 +11,7 @@ import SmoothScroll from '@/components/SmoothScroll';
 import ThemeToggle from '@/components/ThemeToggle';
 import VisitorCounter from '@/components/VisitorCounter';
 import { blogs } from '@/data/blogs';
+import { experience } from '@/data/experience';
 import { projects } from '@/data/projects';
 import Link from 'next/link';
 import { useEffect, useState, type ReactNode } from 'react';
@@ -159,6 +161,15 @@ export default function PortfolioPage() {
                                 </p>
                             </div>
                         </div>
+                    </Row>
+
+                    <Band />
+
+                    <Row className="px-6 md:px-10 py-12">
+                        <section id="experience">
+                            <h2 className="text-2xl mb-8 tracking-wider" style={headingFont}>Experience</h2>
+                            <ExperienceTimeline items={experience} />
+                        </section>
                     </Row>
 
                     <Band />
