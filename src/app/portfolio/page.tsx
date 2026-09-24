@@ -24,7 +24,7 @@ const PILL_BUTTON = 'inline-flex items-center gap-2 rounded-full border border-w
 function Row({ children, className = '' }: { children: ReactNode; className?: string }) {
     return (
         <div className="border-b border-white/15">
-            <div className={`plus-marks max-w-2xl mx-auto border-x border-white/15 bg-page/90 backdrop-blur-xl ${className}`}>{children}</div>
+            <div className={`plus-marks max-w-2xl mx-auto border-x border-white/15 bg-page/80 md:bg-page/90 md:backdrop-blur-xl ${className}`}>{children}</div>
         </div>
     );
 }
@@ -66,15 +66,15 @@ export default function PortfolioPage() {
 
     return (
         <SmoothScroll>
-            <div className="min-h-screen text-page-text overflow-y-auto overflow-x-hidden relative z-[2]" style={geistMonoFont}>
+            <div className="min-h-screen text-page-text overflow-x-clip relative z-[2]" style={geistMonoFont}>
                 <div aria-hidden className="fixed inset-0 -z-10 bg-cover bg-center" style={{ backgroundImage: 'url(/images/background.jpg)' }} />
                 <div aria-hidden className="fixed inset-0 -z-10 bg-black/30" />
                 <main
                     className="relative transition-all duration-700 ease-out"
                     style={{
-                        filter: isLoaded ? 'blur(0px)' : 'blur(20px)',
+                        filter: isLoaded ? 'none' : 'blur(20px)',
                         opacity: isLoaded ? 1 : 0,
-                        transform: isLoaded ? 'scale(1)' : 'scale(1.02)',
+                        transform: isLoaded ? 'none' : 'scale(1.02)',
                     }}
                 >
                     <Band className="h-20 md:h-28">
@@ -92,7 +92,7 @@ export default function PortfolioPage() {
                                     />
                                 </div>
                                 <div className="flex flex-col min-w-0">
-                                    <h1 className="text-2xl md:text-[1.7rem] text-theme-primary tracking-wide whitespace-nowrap mb-1" style={headingFont}>
+                                    <h1 className="text-[1.35rem] sm:text-2xl md:text-[1.7rem] text-theme-primary tracking-wide sm:whitespace-nowrap mb-1" style={headingFont}>
                                         Pratyaksh Krishnna
                                     </h1>
                                     <RotatingTitle />

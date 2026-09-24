@@ -18,7 +18,7 @@ export default function ProjectsPage() {
     const geistMonoFont = { fontFamily: "var(--font-geist-mono), 'Geist Mono', monospace" };
 
     return (
-        <div className="min-h-screen text-page-text overflow-y-auto overflow-x-hidden relative z-[2]" style={geistMonoFont}>
+        <div className="min-h-screen text-page-text overflow-x-clip relative z-[2]" style={geistMonoFont}>
             <nav className="fixed top-6 left-1/2 -translate-x-1/2 z-50 transition-all duration-700 ease-out" style={{ filter: isLoaded ? 'none' : 'blur(20px)', opacity: isLoaded ? 1 : 0 }}>
                 <div
                     className="flex items-center gap-8 px-6 py-3 rounded-xl"
@@ -42,9 +42,9 @@ export default function ProjectsPage() {
             <main
                 className="relative transition-all duration-700 ease-out"
                 style={{
-                    filter: isLoaded ? 'blur(0px)' : 'blur(20px)',
+                    filter: isLoaded ? 'none' : 'blur(20px)',
                     opacity: isLoaded ? 1 : 0,
-                    transform: isLoaded ? 'scale(1)' : 'scale(1.02)',
+                    transform: isLoaded ? 'none' : 'scale(1.02)',
                 }}
             >
 
