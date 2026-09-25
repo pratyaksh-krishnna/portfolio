@@ -205,7 +205,7 @@ export default function PortfolioPage() {
                     <Row className="px-6 md:px-8 py-12">
                         <section id="projects">
                             <h2 className="text-2xl mb-8 tracking-wider" style={headingFont}>Projects</h2>
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+                            <div className="grid grid-cols-1 gap-6">
                                 {projects.slice(0, 2).map((project) => (
                                     <ProjectCard key={project.id} project={project} />
                                 ))}

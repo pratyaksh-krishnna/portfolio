@@ -1,6 +1,6 @@
 'use client';
 
-import { createContext, useContext, useEffect, useRef, useState } from 'react';
+import { createContext, useContext, useRef, useSyncExternalStore } from 'react';
 
 type Theme = 'dark' | 'light';
 
@@ -18,20 +18,40 @@ export function useTheme() {
     return useContext(ThemeContext);
 }
 
+// The saved theme lives in localStorage; the inline script in layout.tsx applies it before hydration.
+const listeners = new Set<() => void>();
+
+function subscribe(listener: () => void) {
+    listeners.add(listener);
+    return () => {
+        listeners.delete(listener);
+    };
+}
+
+function getTheme(): Theme {
+    try {
+        return localStorage.getItem('theme') === 'light' ? 'light' : 'dark';
+    } catch {
+        return 'dark';
+    }
+}
+
+function getServerTheme(): Theme {
+    return 'dark';
+}
+
+function setTheme(next: Theme) {
+    try {
+        localStorage.setItem('theme', next);
+    } catch { }
+    document.documentElement.classList.toggle('light', next === 'light');
+    listeners.forEach((listener) => listener());
+}
+
 export default function ThemeProvider({ children }: { children: React.ReactNode }) {
-    const [theme, setTheme] = useState<Theme>('dark');
-    const [mounted, setMounted] = useState(false);
+    const theme = useSyncExternalStore(subscribe, getTheme, getServerTheme);
     const overlayRef = useRef<HTMLDivElement>(null);
     const animatingRef = useRef(false);
-
-    useEffect(() => {
-        const saved = localStorage.getItem('theme') as Theme | null;
-        if (saved === 'light' || saved === 'dark') {
-            setTheme(saved);
-            document.documentElement.classList.toggle('light', saved === 'light');
-        }
-        setMounted(true);
-    }, []);
 
     const toggleTheme = (x?: number, y?: number) => {
         if (animatingRef.current) return;
@@ -42,8 +62,6 @@ export default function ThemeProvider({ children }: { children: React.ReactNode 
 
         if (!overlay || x === undefined || y === undefined) {
             setTheme(next);
-            localStorage.setItem('theme', next);
-            document.documentElement.classList.toggle('light', next === 'light');
             animatingRef.current = false;
             return;
         }
@@ -59,7 +77,7 @@ export default function ThemeProvider({ children }: { children: React.ReactNode 
         overlay.style.opacity = '1';
         overlay.style.clipPath = `circle(0px at ${x}px ${y}px)`;
         overlay.style.display = 'block';
-        overlay.offsetHeight;
+        void overlay.offsetHeight; // force a reflow so the animation starts from the reset styles
 
         const expandAnim = overlay.animate(
             [
@@ -71,8 +89,6 @@ export default function ThemeProvider({ children }: { children: React.ReactNode 
 
         const switchTimer = setTimeout(() => {
             setTheme(next);
-            localStorage.setItem('theme', next);
-            document.documentElement.classList.toggle('light', next === 'light');
         }, 480);
 
         expandAnim.onfinish = () => {
@@ -99,10 +115,6 @@ export default function ThemeProvider({ children }: { children: React.ReactNode 
             animatingRef.current = false;
         };
     };
-
-    if (!mounted) {
-        return <>{children}</>;
-    }
 
     return (
         <ThemeContext.Provider value={{ theme, toggleTheme }}>

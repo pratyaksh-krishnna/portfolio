@@ -89,27 +89,6 @@ interface ProjectDetailPageProps {
     params: Promise<{ slug: string }>;
 }
 
-const statusStyles = {
-    'Live': {
-        dotColor: 'bg-emerald-400',
-        textColor: 'text-theme-muted',
-        text: 'Live',
-        pulse: true,
-    },
-    'In Progress': {
-        dotColor: 'bg-amber-400',
-        textColor: 'text-theme-muted',
-        text: 'In Progress',
-        pulse: true,
-    },
-    'Open Source': {
-        dotColor: 'bg-violet-400',
-        textColor: 'text-theme-muted',
-        text: 'Open Source',
-        pulse: false,
-    },
-};
-
 export default function ProjectDetailPage({ params }: ProjectDetailPageProps) {
     const { slug } = use(params);
     const project = projects.find((p) => p.id === slug);
@@ -127,7 +106,6 @@ export default function ProjectDetailPage({ params }: ProjectDetailPageProps) {
         notFound();
     }
 
-    const statusStyle = statusStyles[project.status];
     const geistMonoFont = { fontFamily: "var(--font-geist-mono), 'Geist Mono', monospace" };
     const headingFont = { fontFamily: "var(--font-geist-mono), 'Geist Mono', monospace", fontWeight: 600 };
 
@@ -257,10 +235,12 @@ export default function ProjectDetailPage({ params }: ProjectDetailPageProps) {
 
                     <div className="flex items-center justify-between mb-4">
                         <h1 className="text-2xl text-theme-primary" style={headingFont}>{project.title}</h1>
-                        <span className={`text-xs ${statusStyle.textColor} flex items-center gap-1.5`}>
-                            <span className={`w-1.5 h-1.5 ${statusStyle.dotColor} rounded-full ${statusStyle.pulse ? 'animate-pulse' : ''}`}></span>
-                            {statusStyle.text}
-                        </span>
+                        {project.status === 'In Progress' && (
+                            <span className="text-xs text-theme-muted flex items-center gap-1.5">
+                                <span className="w-1.5 h-1.5 bg-blue-500 rounded-full animate-pulse"></span>
+                                In Progress
+                            </span>
+                        )}
                     </div>
 
                     <div className="text-theme-muted text-sm leading-relaxed mb-12">
