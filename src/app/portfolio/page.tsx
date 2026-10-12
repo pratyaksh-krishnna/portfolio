@@ -108,7 +108,7 @@ export default function PortfolioPage() {
                                     </h2>
                                     <div className="mt-4 md:mt-5 text-theme-secondary text-[15px] md:text-lg leading-7 md:leading-[1.8] space-y-4 md:space-y-5">
                                         <p>
-                                            I&apos;m an <span className="text-theme-primary">AI engineer</span> focused on building
+                                            I&apos;m Pratyaksh Krishnna, an <span className="text-theme-primary">AI engineer</span> focused on building
                                             intelligent systems that are{' '}
                                             <span className="text-theme-primary">useful beyond the demo stage</span>.
                                         </p>
