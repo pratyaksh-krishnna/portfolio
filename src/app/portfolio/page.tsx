@@ -10,7 +10,7 @@ import ProjectCard from '@/components/ProjectCard';
 import RotatingTitle from '@/components/RotatingTitle';
 import SkillBadges from '@/components/SkillBadges';
 import SmoothScroll from '@/components/SmoothScroll';
-import StatusBar, { StealthPill } from '@/components/StatusBar';
+import StealthPill from '@/components/StealthPill';
 import ThemeToggle from '@/components/ThemeToggle';
 import VisitorCounter from '@/components/VisitorCounter';
 import { blogs } from '@/data/blogs';
@@ -83,11 +83,9 @@ export default function PortfolioPage() {
                         transform: isLoaded ? 'none' : 'scale(1.02)',
                     }}
                 >
-                    {/* Phones skip the status band; the Stealth pill moves into the hero row instead. */}
+                    {/* Phones start straight at the hero row; desktop keeps an empty top band to match the footer. */}
                     <div className="hidden md:block">
-                        <Band className="h-28">
-                            <StatusBar />
-                        </Band>
+                        <Band className="h-28" />
                     </div>
 
                     <Row className="px-6 md:px-16 pt-20 pb-12 md:pt-24 md:pb-20">
