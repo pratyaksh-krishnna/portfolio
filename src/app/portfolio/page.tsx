@@ -83,9 +83,10 @@ export default function PortfolioPage() {
                         transform: isLoaded ? 'none' : 'scale(1.02)',
                     }}
                 >
-                    {/* Phones start straight at the hero row; desktop keeps an empty top band to match the footer. */}
+
+                    {/* Thin desktop top band so the corner plus marks show above the hero row. */}
                     <div className="hidden md:block">
-                        <Band className="h-28" />
+                        <Band className="h-6" />
                     </div>
 
                     <Row className="px-6 md:px-16 pt-20 pb-12 md:pt-24 md:pb-20">
