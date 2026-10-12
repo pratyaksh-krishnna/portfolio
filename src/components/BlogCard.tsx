@@ -14,11 +14,11 @@ export default function BlogCard({ blog }: BlogCardProps) {
         >
             <div className="flex items-start justify-between gap-4">
                 <div className="flex-1">
-                    <h3 className="text-theme-primary text-sm font-medium mb-1.5 group-hover:text-theme-icon-hover transition-colors" style={{ fontFamily: "var(--font-geist-mono), 'Geist Mono', monospace" }}>
+                    <h3 className="text-theme-primary text-sm md:text-lg font-medium mb-1.5 group-hover:text-theme-icon-hover transition-colors" style={{ fontFamily: "var(--font-geist-mono), 'Geist Mono', monospace" }}>
                         {blog.title}
                     </h3>
 
-                    <p className="text-xs text-theme-muted mb-2 flex items-center gap-1.5">
+                    <p className="text-xs md:text-sm text-theme-muted mb-2 flex items-center gap-1.5">
                         <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
                             <rect x="3" y="4" width="18" height="18" rx="2" />
                             <path d="M16 2v4M8 2v4M3 10h18" />

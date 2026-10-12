@@ -2,6 +2,8 @@
 
 @import "tailwindcss";
 
+@custom-variant dark (&:where(html:not(.light), html:not(.light) *));
+
 :root {
   --theme-page-bg: #000000;
   --theme-page-text: #f5f5f5;

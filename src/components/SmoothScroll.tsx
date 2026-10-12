@@ -3,8 +3,12 @@
 import Lenis from 'lenis';
 import { useEffect } from 'react';
 
+// Temporarily off to compare against native scrolling; set back to true to re-enable Lenis.
+const SMOOTH_SCROLL_ENABLED = false;
+
 export default function SmoothScroll({ children }: { children: React.ReactNode }) {
     useEffect(() => {
+        if (!SMOOTH_SCROLL_ENABLED) return;
         const isTouch = window.matchMedia('(pointer: coarse)').matches;
         const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
         if (isTouch || reducedMotion) return;

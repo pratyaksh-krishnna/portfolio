@@ -33,7 +33,7 @@ export default function RotatingTitle() {
 
     return (
         <p
-            className="text-theme-muted text-sm mb-2 ml-[1px]"
+            className="text-theme-muted text-sm md:text-lg mb-2 ml-[1px]"
             style={{
                 minHeight: '20px',
                 filter: isVisible ? 'blur(0px)' : 'blur(6px)',

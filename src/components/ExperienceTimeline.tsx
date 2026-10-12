@@ -32,10 +32,10 @@ function formatDuration(start: string, end: string) {
 
 function CompanyLogo({ item }: { item: Experience }) {
     if (item.logo) {
-        return <img src={item.logo} alt={item.company} className="w-11 h-11 rounded-lg object-cover border border-theme-divider" />;
+        return <img src={item.logo} alt={item.company} className="w-11 h-11 md:w-12 md:h-12 rounded-lg object-cover border border-theme-divider" />;
     }
     return (
-        <div className="w-11 h-11 rounded-lg border border-theme-divider bg-theme-card flex items-center justify-center text-theme-primary text-lg font-semibold">
+        <div className="w-11 h-11 md:w-12 md:h-12 rounded-lg border border-theme-divider bg-theme-card flex items-center justify-center text-theme-primary text-lg font-semibold">
             {item.company.charAt(0)}
         </div>
     );
@@ -53,8 +53,8 @@ export default function ExperienceTimeline({ items }: { items: Experience[] }) {
                     const isOpen = !!expanded[item.id];
 
                     return (
-                        <li key={item.id} className="group relative pl-9 md:pl-10 pb-10 last:pb-0">
-                            <span data-beam-dot className="absolute left-0 top-1.5 flex h-[15px] w-[15px] items-center justify-center" aria-hidden>
+                        <li key={item.id} className="group relative pl-9 md:pl-10 pb-10 md:pb-14 last:pb-0">
+                            <span data-beam-dot className="absolute left-0 top-1.5 md:top-2 flex h-[15px] w-[15px] items-center justify-center" aria-hidden>
                                 {isCurrent ? (
                                     <>
                                         <span className="absolute inline-flex h-full w-full rounded-full bg-blue-500 opacity-40 animate-ping" />
@@ -70,20 +70,25 @@ export default function ExperienceTimeline({ items }: { items: Experience[] }) {
                                     <CompanyLogo item={item} />
                                 </div>
                                 <div className="min-w-0 flex-1">
-                                    <div className="flex flex-wrap items-center gap-x-2 gap-y-1">
-                                        <h3 className="text-base text-theme-primary font-medium origin-left transition-transform duration-300 group-hover:scale-[1.08] group-hover:text-theme-icon-hover" style={{ fontFamily: 'inherit' }}>{item.role}</h3>
-                                        {isCurrent && (
-                                            <span className="ml-2 text-[11px] px-2 py-0.5 rounded-full bg-blue-500/15 text-blue-400 border border-blue-500/30">
-                                                Current
-                                            </span>
-                                        )}
+                                    {/* On wider screens the dates move to the right so the row uses the full column. */}
+                                    <div className="md:flex md:items-start md:justify-between md:gap-6">
+                                        <div className="min-w-0">
+                                            <div className="flex flex-wrap items-center gap-x-2 gap-y-1">
+                                                <h3 className="text-base md:text-[1.375rem] text-theme-primary font-medium origin-left transition-transform duration-300 group-hover:scale-[1.08] group-hover:text-theme-icon-hover" style={{ fontFamily: 'inherit' }}>{item.role}</h3>
+                                                {isCurrent && (
+                                                    <span className="ml-2 text-[11px] md:text-sm px-2 md:px-2.5 py-0.5 rounded-full bg-blue-500/15 text-blue-400 border border-blue-500/30">
+                                                        Current
+                                                    </span>
+                                                )}
+                                            </div>
+                                            <p className="text-sm md:text-lg text-theme-secondary mt-0.5 md:mt-1">
+                                                {item.company} · {item.type}
+                                            </p>
+                                        </div>
+                                        <p className="text-xs md:text-base text-theme-muted mt-1 md:mt-1 md:shrink-0 md:text-right">
+                                            {formatMonth(item.start)} – {formatMonth(item.end)} · {formatDuration(item.start, item.end)} · {item.location}
+                                        </p>
                                     </div>
-                                    <p className="text-sm text-theme-secondary mt-0.5">
-                                        {item.company} · {item.type}
-                                    </p>
-                                    <p className="text-xs text-theme-muted mt-1">
-                                        {formatMonth(item.start)} – {formatMonth(item.end)} · {formatDuration(item.start, item.end)} · {item.location}
-                                    </p>
 
                                     {item.highlights.length > 0 && (
                                         <>
@@ -91,10 +96,10 @@ export default function ExperienceTimeline({ items }: { items: Experience[] }) {
                                                 id={`experience-${item.id}-details`}
                                                 className={`grid transition-[grid-template-rows,opacity] duration-300 ease-out ${isOpen ? 'grid-rows-[1fr] opacity-100' : 'grid-rows-[0fr] opacity-0'}`}
                                             >
-                                                <ul className="overflow-hidden space-y-2 text-sm leading-6 text-theme-secondary" inert={!isOpen}>
+                                                <ul className="overflow-hidden max-w-3xl space-y-2 md:space-y-3 text-sm md:text-base leading-6 md:leading-7 text-theme-secondary" inert={!isOpen}>
                                                     {item.highlights.map((highlight, i) => (
-                                                        <li key={highlight} className={`flex gap-2.5 ${i === 0 ? 'mt-4' : ''}`}>
-                                                            <span className="mt-[9px] h-1 w-1 shrink-0 rounded-full bg-theme-muted" aria-hidden />
+                                                        <li key={highlight} className={`flex gap-2.5 ${i === 0 ? 'mt-4 md:mt-5' : ''}`}>
+                                                            <span className="mt-[9px] md:mt-[11px] h-1 w-1 shrink-0 rounded-full bg-theme-muted" aria-hidden />
                                                             <span>{highlight}</span>
                                                         </li>
                                                     ))}
@@ -105,7 +110,7 @@ export default function ExperienceTimeline({ items }: { items: Experience[] }) {
                                                 onClick={() => toggle(item.id)}
                                                 aria-expanded={isOpen}
                                                 aria-controls={`experience-${item.id}-details`}
-                                                className="mt-3 inline-flex items-center gap-1 text-xs font-medium text-theme-secondary hover:text-theme-primary transition-colors cursor-pointer"
+                                                className="mt-3 md:mt-4 inline-flex items-center gap-1 text-xs md:text-sm font-medium text-theme-secondary hover:text-theme-primary transition-colors cursor-pointer"
                                             >
                                                 {isOpen ? 'Show less' : 'Show more'}
                                                 <svg
@@ -121,9 +126,9 @@ export default function ExperienceTimeline({ items }: { items: Experience[] }) {
                                     )}
 
                                     {item.tags.length > 0 && (
-                                        <div className="flex flex-wrap gap-2 mt-4">
+                                        <div className="flex flex-wrap gap-2 mt-4 md:mt-5">
                                             {item.tags.map((tag) => (
-                                                <span key={tag} className="text-xs px-2 py-1 bg-theme-badge-bg text-theme-badge-text rounded border border-theme-divider">
+                                                <span key={tag} className="text-xs md:text-sm px-2 md:px-2.5 py-1 bg-theme-badge-bg text-theme-badge-text rounded border border-theme-divider">
                                                     {tag}
                                                 </span>
                                             ))}

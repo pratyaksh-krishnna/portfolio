@@ -135,6 +135,14 @@ const frontendSkills: Skill[] = [
 
 const rows: Skill[][] = [aiSkills, backendSkills, frontendSkills];
 
+// Project tech stacks use a few longer names than the skill list.
+const ICON_ALIASES: Record<string, string> = { 'Next.js': 'Next', 'Node.js': 'Node', 'AWS S3': 'AWS' };
+const iconsByName = new Map(rows.flat().map((skill) => [skill.name, skill.icon]));
+
+export function getSkillIcon(name: string) {
+    return iconsByName.get(ICON_ALIASES[name] ?? name);
+}
+
 function LogoGroup({ items, hidden = false }: { items: Skill[]; hidden?: boolean }) {
     return (
         <ul className="marquee-group flex shrink-0 items-center" aria-hidden={hidden || undefined}>
@@ -146,7 +154,7 @@ function LogoGroup({ items, hidden = false }: { items: Skill[]; hidden?: boolean
                         className="flex items-center gap-2 pr-10 text-theme-muted hover:text-theme-primary transition-colors"
                     >
                         <Icon className="w-6 h-6 shrink-0" aria-hidden />
-                        <span className="text-sm whitespace-nowrap">{skill.name}</span>
+                        <span className="text-sm md:text-base whitespace-nowrap">{skill.name}</span>
                     </li>
                 );
             })}

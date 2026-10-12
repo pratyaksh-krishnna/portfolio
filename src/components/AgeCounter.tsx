@@ -4,6 +4,8 @@ import { useEffect, useState } from 'react';
 
 const BIRTHDATE = new Date('2006-02-09T00:00:00+05:30');
 const MS_PER_YEAR = 365.25 * 24 * 60 * 60 * 1000;
+// The 8th decimal place ticks over about every 316ms; updating more often only re-renders the same text.
+const TICK_MS = MS_PER_YEAR / 1e8;
 
 export default function AgeCounter() {
     const [age, setAge] = useState<number | null>(null);
@@ -16,14 +18,14 @@ export default function AgeCounter() {
         };
 
         updateAge();
-        const interval = setInterval(updateAge, 50);
+        const interval = setInterval(updateAge, TICK_MS);
         return () => clearInterval(interval);
     }, []);
 
     if (age === null) return null;
 
     return (
-        <p className="text-theme-badge-text text-sm font-mono">
+        <p className="text-theme-badge-text text-sm md:text-base font-mono">
             <span className="text-theme-muted">~ </span>
             {age.toFixed(8)}
             <span className="text-theme-muted ml-1">years</span>

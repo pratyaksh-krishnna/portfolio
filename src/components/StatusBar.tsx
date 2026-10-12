@@ -23,7 +23,7 @@ export default function StatusBar() {
         return () => clearInterval(interval);
     }, []);
 
-    const pill = 'flex items-center gap-2 rounded-full border border-white/15 bg-black/35 backdrop-blur-md px-3 py-1.5 text-[11px] sm:text-xs text-white/80';
+    const pill = 'flex items-center gap-2 rounded-full border border-white/15 bg-black/35 backdrop-blur-md px-3 py-1.5 md:px-4 md:py-2 text-[11px] sm:text-xs md:text-sm text-white/80';
 
     return (
         <div className="flex h-full items-end justify-between gap-3 px-4 md:px-6 pb-4">

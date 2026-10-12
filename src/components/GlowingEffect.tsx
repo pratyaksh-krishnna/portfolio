@@ -97,18 +97,37 @@ const GlowingEffect = memo(function GlowingEffect({
     );
 
     useEffect(() => {
+        const element = containerRef.current;
+        if (!element) return;
+
         const handleScroll = () => handleMove();
         const handlePointerMove = (e: PointerEvent) => handleMove(e);
+        let listening = false;
 
-        window.addEventListener('scroll', handleScroll, { passive: true });
-        document.body.addEventListener('pointermove', handlePointerMove, { passive: true });
+        const listen = (on: boolean) => {
+            if (on === listening) return;
+            listening = on;
+            if (on) {
+                window.addEventListener('scroll', handleScroll, { passive: true });
+                document.body.addEventListener('pointermove', handlePointerMove, { passive: true });
+            } else {
+                window.removeEventListener('scroll', handleScroll);
+                document.body.removeEventListener('pointermove', handlePointerMove);
+                element.style.setProperty('--active', '0');
+            }
+        };
+
+        // Only track the pointer while the card is on (or near) screen, so off-screen cards cost nothing during scroll.
+        const observer = new IntersectionObserver(([entry]) => listen(entry.isIntersecting), { rootMargin: `${proximity}px` });
+        observer.observe(element);
+
         return () => {
+            observer.disconnect();
+            listen(false);
             cancelAnimationFrame(frameRef.current);
             animationRef.current?.stop();
-            window.removeEventListener('scroll', handleScroll);
-            document.body.removeEventListener('pointermove', handlePointerMove);
         };
-    }, [handleMove]);
+    }, [handleMove, proximity]);
 
     return (
         <div
