@@ -10,7 +10,7 @@ import ProjectCard from '@/components/ProjectCard';
 import RotatingTitle from '@/components/RotatingTitle';
 import SkillBadges from '@/components/SkillBadges';
 import SmoothScroll from '@/components/SmoothScroll';
-import StatusBar from '@/components/StatusBar';
+import StatusBar, { StealthPill } from '@/components/StatusBar';
 import ThemeToggle from '@/components/ThemeToggle';
 import VisitorCounter from '@/components/VisitorCounter';
 import { blogs } from '@/data/blogs';
@@ -83,11 +83,17 @@ export default function PortfolioPage() {
                         transform: isLoaded ? 'none' : 'scale(1.02)',
                     }}
                 >
-                    <Band className="h-20 md:h-28">
-                        <StatusBar />
-                    </Band>
+                    {/* Phones skip the status band; the Stealth pill moves into the hero row instead. */}
+                    <div className="hidden md:block">
+                        <Band className="h-28">
+                            <StatusBar />
+                        </Band>
+                    </div>
 
                     <Row className="px-6 md:px-16 pt-20 pb-12 md:pt-24 md:pb-20">
+                        <div className="absolute top-5 left-6 md:hidden">
+                            <StealthPill />
+                        </div>
                         <div className="absolute top-5 right-6 md:top-7 md:right-16 flex items-center gap-3">
                             <VisitorCounter />
                             <ThemeToggle />
