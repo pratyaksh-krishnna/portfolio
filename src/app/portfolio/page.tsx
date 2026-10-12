@@ -134,7 +134,7 @@ export default function PortfolioPage() {
                                         </p>
                                     </div>
                                 </div>
-                                <div className="order-first lg:order-none lg:col-start-2 lg:row-start-1">
+                                <div className="order-first mx-auto w-[85%] sm:w-full lg:order-none lg:col-start-2 lg:row-start-1">
                                     <PhotoBooth photos={BOOTH_PHOTOS} />
                                 </div>
                                 <div className="lg:col-start-2 lg:row-start-2">
