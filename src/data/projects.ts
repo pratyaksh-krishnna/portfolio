@@ -9,7 +9,9 @@ export const projects: Project[] = [
         status: 'Live',
         githubUrl: 'https://github.com/pratyaksh-krishnna/MULTI-MODAL-RAG',
         liveUrl: 'https://multi-modal-rag-pratyaksh.vercel.app',
-        image: 'https://ik.imagekit.io/5wegcvcxp/Resume-Multi-modal-rag/Local-Architecture.png',
+        image: '/images/projects/multi-modal-rag.jpg',
+        imageWidth: 1680,
+        imageHeight: 1170,
     },
     {
         id: 'notebook-llm',
@@ -19,6 +21,8 @@ export const projects: Project[] = [
         status: 'Open Source',
         githubUrl: 'https://github.com/pratyaksh-krishnna/NOTEBOOK-LLM',
         image: '/images/projects/notebook-llm.jpg',
+        imageWidth: 1024,
+        imageHeight: 576,
     },
     {
         id: 'class-recording-rag',
@@ -36,6 +40,8 @@ export const projects: Project[] = [
         status: 'Open Source',
         githubUrl: 'https://github.com/pratyaksh-krishnna/RECLAIM',
         image: 'https://github.com/user-attachments/assets/16a4b926-55ce-41ed-9eb0-d608b18ae4e4',
+        imageWidth: 866,
+        imageHeight: 1272,
     },
     {
         id: 'ai-pitch-deck',
@@ -44,5 +50,7 @@ export const projects: Project[] = [
         techStack: [],
         status: 'In Progress',
         image: '/images/projects/in-progress.png',
+        imageWidth: 700,
+        imageHeight: 300,
     },
 ];

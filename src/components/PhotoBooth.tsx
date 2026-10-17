@@ -1,5 +1,6 @@
 'use client';
 
+import Image from 'next/image';
 import { useEffect, useState } from 'react';
 
 export interface BoothPhoto {
@@ -60,12 +61,17 @@ export default function PhotoBooth({ photos }: { photos: BoothPhoto[] }) {
 
             <div className="relative aspect-[8/7] overflow-hidden">
                 {photos.map((photo, i) => (
-                    <img
+                    <Image
                         key={photo.src}
                         src={photo.src}
                         alt={photo.alt}
+                        fill
+                        sizes="(min-width: 1024px) 380px, 85vw"
+                        // The first photo is the page's LCP element, so fetch it up front.
+                        preload={i === 0}
+                        fetchPriority={i === 0 ? 'high' : undefined}
                         aria-hidden={i !== active}
-                        className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-700 ${i === active ? 'opacity-100' : 'opacity-0'}`}
+                        className={`object-cover transition-opacity duration-700 ${i === active ? 'opacity-100' : 'opacity-0'}`}
                         style={photoStyle(photo)}
                     />
                 ))}
@@ -85,10 +91,12 @@ export default function PhotoBooth({ photos }: { photos: BoothPhoto[] }) {
                         aria-pressed={i === active}
                         className="relative aspect-[3/2] cursor-pointer overflow-hidden"
                     >
-                        <img
+                        <Image
                             src={photo.src}
                             alt=""
-                            className={`h-full w-full object-cover transition-opacity duration-300 ${i === active ? 'opacity-100' : 'opacity-50 hover:opacity-80'}`}
+                            fill
+                            sizes="(min-width: 1024px) 130px, 30vw"
+                            className={`object-cover transition-opacity duration-300 ${i === active ? 'opacity-100' : 'opacity-50 hover:opacity-80'}`}
                             style={{ ...photoStyle(photo), objectPosition: photo.thumbPosition ?? photo.position }}
                         />
                         {i === active && <span className="absolute inset-0 ring-2 ring-inset ring-white/80" aria-hidden />}

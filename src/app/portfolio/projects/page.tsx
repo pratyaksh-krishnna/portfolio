@@ -3,23 +3,16 @@
 import ProjectCard from '@/components/ProjectCard';
 import ThemeToggle from '@/components/ThemeToggle';
 import { projects } from '@/data/projects';
+import Image from 'next/image';
 import Link from 'next/link';
-import { useEffect, useState } from 'react';
 
 export default function ProjectsPage() {
-    const [isLoaded, setIsLoaded] = useState(false);
-
-    useEffect(() => {
-        const timer = setTimeout(() => setIsLoaded(true), 100);
-        return () => clearTimeout(timer);
-    }, []);
-
     const headingFont = { fontFamily: "var(--font-geist-mono), 'Geist Mono', monospace", fontWeight: 600 };
     const geistMonoFont = { fontFamily: "var(--font-geist-mono), 'Geist Mono', monospace" };
 
     return (
         <div className="min-h-screen text-page-text overflow-x-clip relative z-[2]" style={geistMonoFont}>
-            <nav className="fixed top-6 left-1/2 -translate-x-1/2 z-50 transition-all duration-700 ease-out" style={{ filter: isLoaded ? 'none' : 'blur(20px)', opacity: isLoaded ? 1 : 0 }}>
+            <nav className="page-enter fixed top-6 left-1/2 -translate-x-1/2 z-50">
                 <div
                     className="flex items-center gap-8 px-6 py-3 rounded-xl"
                     style={{
@@ -31,7 +24,7 @@ export default function ProjectsPage() {
                     }}
                 >
                     <Link href="/portfolio" className="hover:scale-105 transition-transform shrink-0">
-                        <img src="/images/avatar.jpg" alt="Avatar" className="w-8 h-8 min-w-[32px] min-h-[32px] rounded-sm object-cover cursor-pointer" />
+                        <Image src="/images/avatar.jpg" alt="Avatar" width={32} height={32} className="w-8 h-8 min-w-[32px] min-h-[32px] rounded-sm object-cover cursor-pointer" />
                     </Link>
                     <Link href="/portfolio/projects" className="text-sm text-theme-secondary hover:text-theme-primary transition-colors">
                         projects
@@ -39,14 +32,7 @@ export default function ProjectsPage() {
                     <ThemeToggle />
                 </div>
             </nav>
-            <main
-                className="relative transition-all duration-700 ease-out"
-                style={{
-                    filter: isLoaded ? 'none' : 'blur(20px)',
-                    opacity: isLoaded ? 1 : 0,
-                    transform: isLoaded ? 'none' : 'scale(1.02)',
-                }}
-            >
+            <main className="page-enter relative">
 
                 <div className="max-w-4xl mx-auto px-6 pt-32 pb-20">
                     <div className="mb-10">

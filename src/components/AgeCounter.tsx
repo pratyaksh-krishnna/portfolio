@@ -22,12 +22,15 @@ export default function AgeCounter() {
         return () => clearInterval(interval);
     }, []);
 
-    if (age === null) return null;
-
+    // The age depends on the visitor's clock, so the server can't render it. Keep the line's space reserved
+    // (a same-width placeholder in the mono font) and fade it in once the client knows the value.
     return (
-        <p className="text-theme-badge-text text-sm md:text-base font-mono">
+        <p
+            className={`text-theme-badge-text text-sm md:text-base font-mono transition-opacity duration-500 ease-out ${age === null ? 'opacity-0' : 'opacity-100'}`}
+            aria-hidden={age === null}
+        >
             <span className="text-theme-muted">~ </span>
-            {age.toFixed(8)}
+            {age === null ? '00.00000000' : age.toFixed(8)}
             <span className="text-theme-muted ml-1">years</span>
         </p>
     );

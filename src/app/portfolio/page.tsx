@@ -16,8 +16,9 @@ import VisitorCounter from '@/components/VisitorCounter';
 import { blogs } from '@/data/blogs';
 import { experience } from '@/data/experience';
 import { projects } from '@/data/projects';
+import Image from 'next/image';
 import Link from 'next/link';
-import { useEffect, useState, type ReactNode } from 'react';
+import { type ReactNode } from 'react';
 
 const CALENDLY_URL = 'https://calendly.com/pratyaksh-krish/30min';
 const RESUME_URL = '/resume.pdf';
@@ -61,13 +62,6 @@ function ViewAllLink({ href }: { href: string }) {
 }
 
 export default function PortfolioPage() {
-    const [isLoaded, setIsLoaded] = useState(false);
-
-    useEffect(() => {
-        const timer = setTimeout(() => setIsLoaded(true), 100);
-        return () => clearTimeout(timer);
-    }, []);
-
     const headingFont = { fontFamily: "var(--font-geist-mono), 'Geist Mono', monospace", fontWeight: 600 };
     const geistMonoFont = { fontFamily: "var(--font-geist-mono), 'Geist Mono', monospace" };
 
@@ -75,14 +69,7 @@ export default function PortfolioPage() {
         <SmoothScroll>
             <div className="min-h-screen text-page-text overflow-x-clip relative z-[2]" style={geistMonoFont}>
                 <div aria-hidden className="fixed inset-0 -z-10 bg-cover bg-center will-change-transform" style={{ backgroundImage: 'url(/images/background-ocean.webp)' }} />
-                <main
-                    className="relative transition-all duration-700 ease-out"
-                    style={{
-                        filter: isLoaded ? 'none' : 'blur(20px)',
-                        opacity: isLoaded ? 1 : 0,
-                        transform: isLoaded ? 'none' : 'scale(1.02)',
-                    }}
-                >
+                <main className="page-enter relative">
 
                     {/* Thin desktop top band so the corner plus marks show above the hero row. */}
                     <div className="hidden md:block">
@@ -228,9 +215,12 @@ export default function PortfolioPage() {
                                     background: `linear-gradient(to bottom, var(--theme-gradient-overlay) 0%, transparent 30%, transparent 70%, var(--theme-gradient-overlay) 100%)`
                                 }}
                             />
-                            <img
+                            <Image
                                 src="/images/vagabond-mountains.jpg"
                                 alt="Vagabond - Mountains"
+                                width={1024}
+                                height={576}
+                                sizes="(min-width: 1152px) 1152px, 100vw"
                                 className="w-full h-56 md:h-80 object-cover object-center opacity-60"
                             />
                             <p

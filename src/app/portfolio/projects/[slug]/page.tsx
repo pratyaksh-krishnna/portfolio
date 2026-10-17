@@ -2,9 +2,10 @@
 
 import ThemeToggle from '@/components/ThemeToggle';
 import { projects } from '@/data/projects';
+import Image from 'next/image';
 import Link from 'next/link';
 import { notFound, useSearchParams } from 'next/navigation';
-import React, { use, useEffect, useState } from 'react';
+import React, { use } from 'react';
 import {
     SiAmazons3,
     SiBun,
@@ -95,13 +96,6 @@ export default function ProjectDetailPage({ params }: ProjectDetailPageProps) {
     const searchParams = useSearchParams();
     const from = searchParams.get('from');
     const backLink = from === 'home' ? '/portfolio#projects' : '/portfolio/projects';
-    const [isLoaded, setIsLoaded] = useState(false);
-
-    useEffect(() => {
-        const timer = setTimeout(() => setIsLoaded(true), 100);
-        return () => clearTimeout(timer);
-    }, []);
-
     if (!project) {
         notFound();
     }
@@ -111,7 +105,7 @@ export default function ProjectDetailPage({ params }: ProjectDetailPageProps) {
 
     return (
         <div className="min-h-screen text-page-text overflow-x-clip relative z-[2]" style={geistMonoFont}>
-            <nav className="fixed top-6 left-1/2 -translate-x-1/2 z-50 transition-all duration-700 ease-out" style={{ filter: isLoaded ? 'none' : 'blur(20px)', opacity: isLoaded ? 1 : 0 }}>
+            <nav className="page-enter fixed top-6 left-1/2 -translate-x-1/2 z-50">
                 <div
                     className="flex items-center gap-8 px-6 py-3 rounded-xl"
                     style={{
@@ -123,7 +117,7 @@ export default function ProjectDetailPage({ params }: ProjectDetailPageProps) {
                     }}
                 >
                     <Link href="/portfolio" className="hover:scale-105 transition-transform shrink-0">
-                        <img src="/images/avatar.jpg" alt="Avatar" className="w-8 h-8 min-w-[32px] min-h-[32px] rounded-sm object-cover cursor-pointer" />
+                        <Image src="/images/avatar.jpg" alt="Avatar" width={32} height={32} className="w-8 h-8 min-w-[32px] min-h-[32px] rounded-sm object-cover cursor-pointer" />
                     </Link>
                     <Link href="/portfolio/projects" className="text-sm text-theme-secondary hover:text-theme-primary transition-colors">
                         projects
@@ -131,14 +125,7 @@ export default function ProjectDetailPage({ params }: ProjectDetailPageProps) {
                     <ThemeToggle />
                 </div>
             </nav>
-            <main
-                className="relative transition-all duration-700 ease-out"
-                style={{
-                    filter: isLoaded ? 'none' : 'blur(20px)',
-                    opacity: isLoaded ? 1 : 0,
-                    transform: isLoaded ? 'none' : 'scale(1.02)',
-                }}
-            >
+            <main className="page-enter relative">
 
                 <div className="max-w-3xl mx-auto px-6 pt-32 pb-20">
                     <div className="mb-8">
@@ -167,9 +154,14 @@ export default function ProjectDetailPage({ params }: ProjectDetailPageProps) {
                                 poster={project.image}
                             />
                         ) : project.image ? (
-                            <img
+                            <Image
                                 src={project.image}
                                 alt={project.title}
+                                width={project.imageWidth ?? 1200}
+                                height={project.imageHeight ?? 675}
+                                sizes="(min-width: 768px) 720px, 100vw"
+                                preload
+                                unoptimized={project.image.startsWith('http')}
                                 className="w-full aspect-video object-cover object-top"
                             />
                         ) : (

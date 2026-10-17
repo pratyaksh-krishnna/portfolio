@@ -1,6 +1,7 @@
 'use client';
 
 import { motion, useMotionValue, useReducedMotion, useSpring } from 'framer-motion';
+import Image from 'next/image';
 import { useRef, type MouseEvent } from 'react';
 import { FaGithub } from 'react-icons/fa';
 import { FiArrowUpRight } from 'react-icons/fi';
@@ -16,6 +17,9 @@ export interface Project {
     githubUrl?: string;
     liveUrl?: string;
     image?: string;
+    /** Intrinsic size of `image`, so it can be served responsively without layout shift. */
+    imageWidth?: number;
+    imageHeight?: number;
     videoUrl?: string;
     postUrl?: string;
 }
@@ -32,6 +36,8 @@ const linkHover = 'hover:border-blue-500/50 hover:bg-blue-500/10 hover:text-blue
 const linkButton = 'inline-flex items-center gap-1.5 rounded-md border border-theme-badge-border bg-theme-badge-bg px-2 py-1 text-xs font-medium text-theme-badge-text transition-colors';
 
 const monoFont = { fontFamily: "var(--font-geist-mono), 'Geist Mono', monospace" };
+
+const MotionImage = motion.create(Image);
 
 // How far (px) the photo drifts toward the cursor at the edge of the box.
 const FOLLOW_PX = 14;
@@ -89,11 +95,15 @@ export default function ProjectCard({ project, compact = false }: ProjectCardPro
 
                     <div className="absolute inset-0 flex items-center justify-center p-6 md:p-8">
                         {project.image ? (
-                            <motion.img
+                            <MotionImage
                                 src={project.image}
                                 alt={project.title}
+                                width={project.imageWidth ?? 1200}
+                                height={project.imageHeight ?? 750}
+                                sizes="(min-width: 1024px) 480px, (min-width: 768px) 45vw, 90vw"
+                                unoptimized={project.image.startsWith('http')}
                                 style={{ x, y }}
-                                className="max-h-full max-w-full rounded-md object-contain shadow-2xl shadow-black/50"
+                                className="h-auto w-auto max-h-full max-w-full rounded-md object-contain shadow-2xl shadow-black/50"
                             />
                         ) : (
                             <motion.span

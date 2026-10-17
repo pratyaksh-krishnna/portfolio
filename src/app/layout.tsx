@@ -1,12 +1,19 @@
 import ThemeProvider from "@/components/ThemeProvider";
 import type { Metadata } from "next";
-import { Dancing_Script, Geist_Mono } from "next/font/google";
+import { Dancing_Script, Geist_Mono, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 
 const geistMono = Geist_Mono({
   subsets: ["latin"],
   variable: "--font-geist-mono",
   display: "swap",
+});
+
+const jetbrainsMono = JetBrains_Mono({
+  subsets: ["latin"],
+  variable: "--font-jetbrains-mono",
+  display: "swap",
+  weight: ["400", "500"],
 });
 
 const dancingScript = Dancing_Script({
@@ -95,7 +102,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={`${geistMono.variable} ${dancingScript.variable} antialiased`}>
+      <body className={`${geistMono.variable} ${jetbrainsMono.variable} ${dancingScript.variable} antialiased`}>
         <script
           dangerouslySetInnerHTML={{
             __html: `(function(){try{var t=localStorage.getItem('theme');if(t==='light')document.documentElement.classList.add('light')}catch(e){}})()`,
