@@ -49,6 +49,29 @@ const GRID_LINES =
     'dark:[background-image:linear-gradient(to_right,rgba(255,255,255,0.09)_1px,transparent_1px),linear-gradient(to_bottom,rgba(255,255,255,0.09)_1px,transparent_1px)] ' +
     '[background-size:24px_24px]';
 
+// Sunburst rays as [start°, end°, bright, dim]: each has one hard edge and falls off across its width.
+const SUNBURST_RAYS = [
+    [9, 24, '#ffffff', '#525252'],
+    [31, 40, '#a3a3a3', '#262626'],
+    [52, 71, '#ffffff', '#737373'],
+    [77, 88, '#d4d4d4', '#404040'],
+    [103, 120, '#ffffff', '#525252'],
+    [128, 139, '#a3a3a3', '#262626'],
+    [149, 168, '#ffffff', '#737373'],
+    [176, 187, '#d4d4d4', '#404040'],
+    [199, 217, '#ffffff', '#525252'],
+    [224, 234, '#a3a3a3', '#262626'],
+    [247, 264, '#ffffff', '#737373'],
+    [271, 283, '#d4d4d4', '#404040'],
+    [295, 313, '#ffffff', '#525252'],
+    [320, 331, '#a3a3a3', '#262626'],
+    [342, 356, '#ffffff', '#737373'],
+] as const;
+const SUNBURST_STOPS = SUNBURST_RAYS.map(([start, end, bright, dim]) => `#000 ${start}deg, ${bright} ${start + 0.3}deg, ${dim} ${end}deg, #000 ${end + 0.3}deg`).join(', ');
+const SUNBURST_STYLE = {
+    backgroundImage: `radial-gradient(ellipse 50% 50% at 50% 50%, transparent 30%, rgba(0,0,0,0.65) 100%), conic-gradient(${SUNBURST_STOPS})`,
+};
+
 export default function ProjectCard({ project, compact = false }: ProjectCardProps) {
     const cardLink = `/portfolio/projects/${project.id}?from=${compact ? 'projects' : 'home'}`;
     const cardPadding = compact ? 'p-4' : 'p-4 md:p-5';
@@ -89,9 +112,13 @@ export default function ProjectCard({ project, compact = false }: ProjectCardPro
             <GlowingEffect spread={40} proximity={64} inactiveZone={0.01} borderWidth={2} colors={GLOW_COLORS} />
             <div className={`relative flex h-full flex-col rounded-xl border border-theme-card-border bg-theme-card ${cardPadding} transition-colors duration-300 group-hover:border-theme-card-hover-border`}>
                 <div ref={boxRef} className="relative aspect-[16/10] overflow-hidden rounded-lg bg-neutral-200/70 dark:bg-neutral-950">
-                    {/* Grid that fades out toward the top, lit by a spotlight rising from the bottom edge. */}
-                    <div className={`absolute inset-0 ${GRID_LINES} [mask-image:radial-gradient(ellipse_90%_80%_at_50%_100%,black_20%,transparent_75%)]`} aria-hidden />
-                    <div className="absolute inset-0 bg-[radial-gradient(ellipse_55%_45%_at_50%_100%,rgba(255,255,255,0.9),transparent)] dark:bg-[radial-gradient(ellipse_60%_55%_at_50%_100%,rgba(255,255,255,0.22),transparent)]" aria-hidden />
+                    <div className={`absolute inset-0 ${GRID_LINES} [mask-image:radial-gradient(ellipse_90%_90%_at_50%_50%,black_20%,transparent_80%)]`} aria-hidden />
+                    {/* Oversized so the rays still fill the box while they burst out from behind the photo on hover. */}
+                    <div
+                        style={SUNBURST_STYLE}
+                        className="absolute -inset-1/2 scale-50 -rotate-12 opacity-0 transition duration-500 ease-out group-hover:scale-100 group-hover:rotate-0 group-hover:opacity-100 motion-reduce:scale-100 motion-reduce:rotate-0"
+                        aria-hidden
+                    />
 
                     <div className="absolute inset-0 flex items-center justify-center p-6 md:p-8">
                         {project.image ? (
@@ -108,7 +135,7 @@ export default function ProjectCard({ project, compact = false }: ProjectCardPro
                         ) : (
                             <motion.span
                                 style={{ x, y, ...monoFont, fontWeight: 600 }}
-                                className="px-6 text-center text-lg tracking-tight text-theme-secondary"
+                                className="rounded-md px-6 py-3 text-center text-lg tracking-tight text-theme-secondary transition-colors duration-300 group-hover:bg-black group-hover:text-white"
                             >
                                 {project.title}
                             </motion.span>
