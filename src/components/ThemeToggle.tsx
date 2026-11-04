@@ -16,12 +16,12 @@ export default function ThemeToggle() {
     return (
         <button
             onClick={handleClick}
-            className="relative w-8 h-8 flex items-center justify-center rounded-lg text-theme-secondary hover:text-theme-primary transition-all duration-300 hover:bg-theme-card cursor-pointer"
+            className="relative w-8 h-8 flex items-center justify-center rounded-lg text-theme-secondary hover:text-theme-primary transition-all duration-300 motion-reduce:transition-none hover:bg-theme-card cursor-pointer"
             aria-label={`Switch to ${isLight ? 'dark' : 'light'} mode`}
             title={`Switch to ${isLight ? 'dark' : 'light'} mode`}
         >
             <svg
-                className={`w-[18px] h-[18px] absolute transition-all duration-500 ${isLight ? 'opacity-0 rotate-90 scale-50' : 'opacity-100 rotate-0 scale-100'
+                className={`w-[18px] h-[18px] absolute transition-all duration-500 motion-reduce:transition-none ${isLight ? 'opacity-0 rotate-90 scale-50' : 'opacity-100 rotate-0 scale-100'
                     }`}
                 fill="none"
                 stroke="currentColor"
@@ -36,7 +36,7 @@ export default function ThemeToggle() {
                 />
             </svg>
             <svg
-                className={`w-[18px] h-[18px] absolute transition-all duration-500 ${isLight ? 'opacity-100 rotate-0 scale-100' : 'opacity-0 -rotate-90 scale-50'
+                className={`w-[18px] h-[18px] absolute transition-all duration-500 motion-reduce:transition-none ${isLight ? 'opacity-100 rotate-0 scale-100' : 'opacity-0 -rotate-90 scale-50'
                     }`}
                 fill="none"
                 stroke="currentColor"

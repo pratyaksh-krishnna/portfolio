@@ -32,10 +32,10 @@ function formatDuration(start: string, end: string) {
 
 function CompanyLogo({ item }: { item: Experience }) {
     if (item.logo) {
-        return <img src={item.logo} alt={item.company} className="w-11 h-11 md:w-12 md:h-12 rounded-lg object-cover border border-theme-divider" />;
+        return <img src={item.logo} alt={item.company} className="h-9 w-9 md:h-10 md:w-10 rounded-lg object-cover border border-theme-divider" />;
     }
     return (
-        <div className="w-11 h-11 md:w-12 md:h-12 rounded-lg border border-theme-divider bg-theme-card flex items-center justify-center text-theme-primary text-lg font-semibold">
+        <div className="h-9 w-9 md:h-10 md:w-10 rounded-lg border border-theme-divider bg-theme-card flex items-center justify-center text-theme-primary text-sm font-medium">
             {item.company.charAt(0)}
         </div>
     );
@@ -53,8 +53,8 @@ export default function ExperienceTimeline({ items }: { items: Experience[] }) {
                     const isOpen = !!expanded[item.id];
 
                     return (
-                        <li key={item.id} className="group relative pl-9 md:pl-10 pb-10 md:pb-14 last:pb-0">
-                            <span data-beam-dot className="absolute left-0 top-1.5 md:top-2 flex h-[15px] w-[15px] items-center justify-center" aria-hidden>
+                        <li key={item.id} className="group relative pl-7 md:pl-9 pb-8 md:pb-10 last:pb-0">
+                            <span data-beam-dot className="absolute left-0 top-2.5 md:top-3 flex h-[15px] w-[15px] items-center justify-center" aria-hidden>
                                 {isCurrent ? (
                                     <>
                                         <span className="absolute inline-flex h-full w-full rounded-full bg-blue-500 opacity-40 animate-ping" />
@@ -65,29 +65,36 @@ export default function ExperienceTimeline({ items }: { items: Experience[] }) {
                                 )}
                             </span>
 
-                            <div className="flex gap-4 -mx-3 -my-2 px-3 py-2 rounded-xl border border-transparent transition-colors duration-300 group-hover:bg-theme-card group-hover:border-theme-card-border">
-                                <div className="shrink-0 self-start transition-transform duration-500 group-hover:scale-110">
+                            <div className="flex gap-3 md:gap-4 -mx-3 -my-2 px-3 py-2 rounded-xl border border-transparent transition-colors duration-300 ease-[cubic-bezier(0.32,0.72,0,1)] group-hover:bg-theme-card group-hover:border-theme-card-border">
+                                <div className="shrink-0 self-start">
                                     <CompanyLogo item={item} />
                                 </div>
                                 <div className="min-w-0 flex-1">
                                     {/* On wider screens the dates move to the right so the row uses the full column. */}
-                                    <div className="md:flex md:items-start md:justify-between md:gap-6">
+                                    <div className="md:flex md:items-start md:justify-between md:gap-5">
                                         <div className="min-w-0">
                                             <div className="flex flex-wrap items-center gap-x-2 gap-y-1">
-                                                <h3 className="text-base md:text-[1.375rem] text-theme-primary font-medium origin-left transition-transform duration-300 group-hover:scale-[1.08] group-hover:text-theme-icon-hover" style={{ fontFamily: 'inherit' }}>{item.role}</h3>
+                                                <h3 className="text-[15px] md:text-[17px] leading-snug tracking-tight text-theme-primary font-medium" style={{ fontFamily: 'inherit' }}>{item.role}</h3>
                                                 {isCurrent && (
-                                                    <span className="ml-2 text-[11px] md:text-sm px-2 md:px-2.5 py-0.5 rounded-full bg-blue-500/15 text-blue-400 border border-blue-500/30">
+                                                    <span className="text-[10px] leading-4 font-medium px-2 py-0.5 rounded-full bg-blue-500/10 text-blue-600 dark:text-blue-400 border border-blue-500/20">
                                                         Current
                                                     </span>
                                                 )}
                                             </div>
-                                            <p className="text-sm md:text-lg text-theme-secondary mt-0.5 md:mt-1">
-                                                {item.company} · {item.type}
+                                            <p className="flex flex-wrap items-center gap-x-1.5 text-xs md:text-[13px] leading-5 mt-1">
+                                                <span className="text-theme-secondary font-medium">{item.company}</span>
+                                                <span className="text-theme-faint" aria-hidden>·</span>
+                                                <span className="text-theme-muted">{item.type}</span>
                                             </p>
                                         </div>
-                                        <p className="text-xs md:text-base text-theme-muted mt-1 md:mt-1 md:shrink-0 md:text-right">
-                                            {formatMonth(item.start)} – {formatMonth(item.end)} · {formatDuration(item.start, item.end)} · {item.location}
-                                        </p>
+                                        <div className="mt-2 md:mt-0.5 md:shrink-0 md:text-right">
+                                            <p className="text-[11px] md:text-xs leading-5 tabular-nums text-theme-secondary">
+                                                {formatMonth(item.start)} – {formatMonth(item.end)}
+                                            </p>
+                                            <p className="text-[11px] leading-5 text-theme-muted">
+                                                {formatDuration(item.start, item.end)} · {item.location}
+                                            </p>
+                                        </div>
                                     </div>
 
                                     {item.highlights.length > 0 && (
@@ -96,10 +103,10 @@ export default function ExperienceTimeline({ items }: { items: Experience[] }) {
                                                 id={`experience-${item.id}-details`}
                                                 className={`grid transition-[grid-template-rows,opacity] duration-300 ease-out ${isOpen ? 'grid-rows-[1fr] opacity-100' : 'grid-rows-[0fr] opacity-0'}`}
                                             >
-                                                <ul className="overflow-hidden max-w-3xl space-y-2 md:space-y-3 text-sm md:text-base leading-6 md:leading-7 text-theme-secondary" inert={!isOpen}>
+                                                <ul className="overflow-hidden max-w-2xl space-y-2 text-[13px] md:text-sm leading-6 text-theme-secondary" inert={!isOpen}>
                                                     {item.highlights.map((highlight, i) => (
-                                                        <li key={highlight} className={`flex gap-2.5 ${i === 0 ? 'mt-4 md:mt-5' : ''}`}>
-                                                            <span className="mt-[9px] md:mt-[11px] h-1 w-1 shrink-0 rounded-full bg-theme-muted" aria-hidden />
+                                                        <li key={highlight} className={`flex gap-2.5 ${i === 0 ? 'mt-3 md:mt-4' : ''}`}>
+                                                            <span className="mt-2.5 h-1 w-1 shrink-0 rounded-full bg-theme-faint" aria-hidden />
                                                             <span>{highlight}</span>
                                                         </li>
                                                     ))}
@@ -110,7 +117,7 @@ export default function ExperienceTimeline({ items }: { items: Experience[] }) {
                                                 onClick={() => toggle(item.id)}
                                                 aria-expanded={isOpen}
                                                 aria-controls={`experience-${item.id}-details`}
-                                                className="mt-3 md:mt-4 inline-flex items-center gap-1 text-xs md:text-sm font-medium text-theme-secondary hover:text-theme-primary transition-colors cursor-pointer"
+                                                className="mt-2 inline-flex min-h-8 items-center gap-1.5 rounded text-[11px] md:text-xs font-medium text-theme-muted hover:text-theme-primary transition-colors duration-300 ease-[cubic-bezier(0.32,0.72,0,1)] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-theme-primary cursor-pointer"
                                             >
                                                 {isOpen ? 'Show less' : 'Show more'}
                                                 <svg
@@ -126,9 +133,9 @@ export default function ExperienceTimeline({ items }: { items: Experience[] }) {
                                     )}
 
                                     {item.tags.length > 0 && (
-                                        <div className="flex flex-wrap gap-2 mt-4 md:mt-5">
+                                        <div className="flex flex-wrap gap-1.5 mt-2.5 md:mt-3">
                                             {item.tags.map((tag) => (
-                                                <span key={tag} className="text-xs md:text-sm px-2 md:px-2.5 py-1 bg-theme-badge-bg text-theme-badge-text rounded border border-theme-divider">
+                                                <span key={tag} className="text-[10px] md:text-[11px] leading-4 px-2 py-0.5 bg-theme-badge-bg text-theme-badge-text rounded-md border border-theme-divider">
                                                     {tag}
                                                 </span>
                                             ))}

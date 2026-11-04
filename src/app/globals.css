@@ -25,6 +25,8 @@
   --theme-gradient-overlay: rgba(0, 0, 0, 1);
   --theme-icon-hover: #ffffff;
   --theme-grid-mark: rgba(255, 255, 255, 0.55);
+  --theme-action-shadow: 0 0 14px rgba(255, 255, 255, 0.22);
+  --theme-action-hover-shadow: 0 0 22px rgba(255, 255, 255, 0.4);
 }
 
 .light {
@@ -49,7 +51,9 @@
   --theme-avatar-shadow: 0 0 20px rgba(0, 0, 0, 0.15), 0 0 40px rgba(0, 0, 0, 0.08);
   --theme-gradient-overlay: rgba(250, 250, 250, 1);
   --theme-icon-hover: #000000;
-  --theme-grid-mark: rgba(255, 255, 255, 0.55);
+  --theme-grid-mark: rgba(0, 0, 0, 0.4);
+  --theme-action-shadow: 0 0 14px rgba(0, 0, 0, 0.1);
+  --theme-action-hover-shadow: 0 0 22px rgba(0, 0, 0, 0.18);
 }
 
 @theme {
@@ -162,6 +166,57 @@
 
   ::-webkit-scrollbar {
     display: none;
+  }
+}
+
+.section-heading {
+  @apply text-[22px] md:text-[28px] tracking-tight;
+}
+
+/* Reveal the complete new theme above the previous page snapshot. */
+html.theme-reveal::view-transition-group(root) {
+  animation: none;
+}
+
+html.theme-reveal::view-transition-image-pair(root) {
+  isolation: auto;
+}
+
+html.theme-reveal::view-transition-old(root),
+html.theme-reveal::view-transition-new(root) {
+  animation: none;
+  mix-blend-mode: normal;
+}
+
+html.theme-reveal::view-transition-old(root) {
+  z-index: 1;
+}
+
+html.theme-reveal::view-transition-new(root) {
+  z-index: 2;
+  will-change: clip-path;
+}
+
+/* Capture final colors rather than an unfinished hover/color transition. */
+html.theme-reveal *,
+html.theme-reveal *::before,
+html.theme-reveal *::after {
+  transition: none !important;
+}
+
+/* Avoid repainting the moving logo cloud behind the live theme snapshot. */
+html.theme-reveal .marquee-track {
+  animation-play-state: paused;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  html.theme-fade,
+  html.theme-fade *,
+  html.theme-fade *::before,
+  html.theme-fade *::after {
+    transition-property: background-color, color, border-color, box-shadow, fill, stroke !important;
+    transition-duration: 650ms !important;
+    transition-timing-function: ease-in-out !important;
   }
 }
 

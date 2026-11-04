@@ -27,20 +27,21 @@ const BOOTH_PHOTOS = [
     { src: '/images/booth/mountains.webp', alt: 'Pratyaksh standing on a rock above green hills', position: '50% 62%', thumbPosition: '50% 0%' },
     { src: '/images/booth/valley.webp', alt: 'Pratyaksh looking out over a mountain valley', position: '50% 62%' },
 ];
-const PILL_BUTTON = 'inline-flex items-center gap-2 rounded-full border border-white/25 hover:border-white/50 bg-black/35 hover:bg-black/50 px-4 py-2 md:px-5 md:py-2.5 text-sm md:text-base text-white/80 hover:text-white shadow-[0_0_14px_rgba(255,255,255,0.22)] hover:shadow-[0_0_22px_rgba(255,255,255,0.4)] transition';
+const PILL_BUTTON = 'inline-flex items-center gap-2 rounded-full border border-theme-badge-border hover:border-theme-card-hover-border bg-theme-badge-bg hover:bg-theme-card-hover px-4 py-2 md:px-5 md:py-2.5 text-sm md:text-base text-theme-primary hover:text-theme-icon-hover shadow-[var(--theme-action-shadow)] hover:shadow-[var(--theme-action-hover-shadow)] transition duration-300 ease-[cubic-bezier(0.32,0.72,0,1)] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-theme-primary';
+const SOCIAL_LINK = 'inline-flex h-9 w-9 items-center justify-center rounded-full border border-theme-divider bg-page/80 text-theme-secondary hover:text-theme-icon-hover hover:border-theme-card-hover-border hover:bg-theme-card-hover hover:-translate-y-0.5 transition duration-300 ease-[cubic-bezier(0.32,0.72,0,1)] motion-reduce:transform-none focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-theme-primary';
 
 function Row({ children, className = '' }: { children: ReactNode; className?: string }) {
     return (
-        <div className="border-b border-white/15">
-            <div className={`plus-marks max-w-6xl mx-auto border-x border-white/15 bg-page/80 md:bg-page/95 ${className}`}>{children}</div>
+        <div className="border-b border-theme-divider">
+            <div className={`plus-marks max-w-6xl mx-auto border-x border-theme-divider bg-page/80 md:bg-page/95 ${className}`}>{children}</div>
         </div>
     );
 }
 
 function Band({ className = 'h-12 md:h-16', children }: { className?: string; children?: ReactNode }) {
     return (
-        <div className="border-b border-white/15">
-            <div className={`plus-marks max-w-6xl mx-auto border-x border-white/15 ${className}`}>{children}</div>
+        <div className="border-b border-theme-divider">
+            <div className={`plus-marks max-w-6xl mx-auto border-x border-theme-divider ${className}`}>{children}</div>
         </div>
     );
 }
@@ -95,7 +96,7 @@ export default function PortfolioPage() {
                                     />
                                     <RotatingTitle />
                                     <AgeCounter />
-                                    <h2 className="mt-8 md:mt-10 text-xl md:text-[1.6rem] leading-snug text-theme-primary tracking-tight" style={headingFont}>
+                                    <h2 className="section-heading mt-8 md:mt-10 leading-snug text-theme-primary" style={headingFont}>
                                         Building AI-native products, from prototype to production.
                                     </h2>
                                     <div className="mt-4 md:mt-5 text-theme-secondary text-[15px] md:text-lg leading-7 md:leading-[1.8] space-y-4 md:space-y-5">
@@ -138,14 +139,14 @@ export default function PortfolioPage() {
                                             </svg>
                                             Resume
                                         </a>
-                                        <div className="flex items-center gap-4 md:gap-5 text-theme-muted">
-                                            <a href="https://x.com/pratyaksh_k" target="_blank" rel="noopener noreferrer" className="hover:text-theme-icon-hover transition-colors" title="X/Twitter">
+                                        <div className="flex items-center gap-2 md:gap-3">
+                                            <a href="https://x.com/pratyaksh_k" target="_blank" rel="noopener noreferrer" className={SOCIAL_LINK} title="X/Twitter" aria-label="X/Twitter profile">
                                                 <svg className="w-[18px] h-[18px] md:w-5 md:h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" /></svg>
                                             </a>
-                                            <a href="https://www.linkedin.com/in/pratyaksh-krishnna/" target="_blank" rel="noopener noreferrer" className="hover:text-theme-icon-hover transition-colors" title="LinkedIn">
+                                            <a href="https://www.linkedin.com/in/pratyaksh-krishnna/" target="_blank" rel="noopener noreferrer" className={SOCIAL_LINK} title="LinkedIn" aria-label="LinkedIn profile">
                                                 <svg className="w-[18px] h-[18px] md:w-5 md:h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z" /></svg>
                                             </a>
-                                            <a href="https://github.com/pratyaksh-krishnna" target="_blank" rel="noopener noreferrer" className="hover:text-theme-icon-hover transition-colors" title="GitHub">
+                                            <a href="https://github.com/pratyaksh-krishnna" target="_blank" rel="noopener noreferrer" className={SOCIAL_LINK} title="GitHub" aria-label="GitHub profile">
                                                 <svg className="w-[18px] h-[18px] md:w-5 md:h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z" /></svg>
                                             </a>
                                         </div>
@@ -162,7 +163,7 @@ export default function PortfolioPage() {
 
                     <Row className="px-6 md:px-16 py-12 md:py-16">
                         <section id="experience">
-                            <h2 className="text-2xl md:text-4xl mb-8 md:mb-12 tracking-wide" style={headingFont}>Experience</h2>
+                            <h2 className="section-heading mb-7 md:mb-9" style={headingFont}>Experience</h2>
                             <ExperienceTimeline items={experience} />
                         </section>
                     </Row>
@@ -170,7 +171,7 @@ export default function PortfolioPage() {
                     <Band />
 
                     <Row className="px-6 md:px-16 py-12 md:py-16">
-                        <h2 className="text-2xl md:text-4xl mb-8 md:mb-12 tracking-wide" style={headingFont}>Skills</h2>
+                        <h2 className="section-heading mb-7 md:mb-9" style={headingFont}>Skills</h2>
                         <SkillBadges />
                     </Row>
 
@@ -178,7 +179,7 @@ export default function PortfolioPage() {
 
                     <Row className="px-6 md:px-16 py-12 md:py-16">
                         <section id="projects">
-                            <h2 className="text-2xl md:text-4xl mb-8 md:mb-12 tracking-wide" style={headingFont}>Projects</h2>
+                            <h2 className="section-heading mb-7 md:mb-9" style={headingFont}>Projects</h2>
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                                 {projects.slice(0, 2).map((project) => (
                                     <ProjectCard key={project.id} project={project} />
@@ -194,7 +195,7 @@ export default function PortfolioPage() {
 
                             <Row className="px-6 md:px-16 py-12 md:py-16">
                                 <section id="blog">
-                                    <h2 className="text-2xl md:text-4xl mb-8 md:mb-12 tracking-wide" style={headingFont}>Blogs</h2>
+                                    <h2 className="section-heading mb-7 md:mb-9" style={headingFont}>Blogs</h2>
                                     <div className="space-y-4">
                                         {blogs.map((blog) => (
                                             <BlogCard key={blog.id} blog={blog} />

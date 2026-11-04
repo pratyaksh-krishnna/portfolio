@@ -226,7 +226,7 @@ export default function ProjectDetailPage({ params }: ProjectDetailPageProps) {
                     <div className="border-t border-theme-divider mb-8"></div>
 
                     <div className="flex items-center justify-between mb-4">
-                        <h1 className="text-2xl text-theme-primary" style={headingFont}>{project.title}</h1>
+                        <h1 className="section-heading text-theme-primary" style={headingFont}>{project.title}</h1>
                         {project.status === 'In Progress' && (
                             <span className="text-xs text-theme-muted flex items-center gap-1.5">
                                 <span className="w-1.5 h-1.5 bg-blue-500 rounded-full animate-pulse"></span>

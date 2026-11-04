@@ -40,7 +40,7 @@ export default function ProjectsPage() {
                             <svg className="w-4 h-4 back-arrow" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 17L17 7M17 7H7M17 7v10" />
                             </svg>
-                            <span className="text-2xl tracking-wider" style={headingFont}>Projects</span>
+                            <span className="section-heading" style={headingFont}>Projects</span>
                         </Link>
                     </div>
 

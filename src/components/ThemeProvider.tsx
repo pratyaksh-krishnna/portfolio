@@ -1,6 +1,7 @@
 'use client';
 
 import { createContext, useContext, useRef, useSyncExternalStore } from 'react';
+import { flushSync } from 'react-dom';
 
 type Theme = 'dark' | 'light';
 
@@ -29,11 +30,7 @@ function subscribe(listener: () => void) {
 }
 
 function getTheme(): Theme {
-    try {
-        return localStorage.getItem('theme') === 'light' ? 'light' : 'dark';
-    } catch {
-        return 'dark';
-    }
+    return document.documentElement.classList.contains('light') ? 'light' : 'dark';
 }
 
 function getServerTheme(): Theme {
@@ -50,85 +47,74 @@ function setTheme(next: Theme) {
 
 export default function ThemeProvider({ children }: { children: React.ReactNode }) {
     const theme = useSyncExternalStore(subscribe, getTheme, getServerTheme);
-    const overlayRef = useRef<HTMLDivElement>(null);
     const animatingRef = useRef(false);
 
-    const toggleTheme = (x?: number, y?: number) => {
+    const toggleTheme = async (x?: number, y?: number) => {
         if (animatingRef.current) return;
-        animatingRef.current = true;
 
-        const next = theme === 'dark' ? 'light' : 'dark';
-        const overlay = overlayRef.current;
+        const next = getTheme() === 'dark' ? 'light' : 'dark';
+        const root = document.documentElement;
 
-        if (!overlay || x === undefined || y === undefined) {
+        if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
             setTheme(next);
-            animatingRef.current = false;
             return;
         }
 
-        overlay.getAnimations().forEach(a => a.cancel());
+        animatingRef.current = true;
+        let transition: ViewTransition | undefined;
 
-        const maxRadius = Math.hypot(
-            Math.max(x, window.innerWidth - x),
-            Math.max(y, window.innerHeight - y)
-        );
+        try {
+            if (typeof document.startViewTransition !== 'function') {
+                // Keep older browsers smooth without an overlay hiding the content.
+                root.classList.add('theme-fade');
+                void root.offsetWidth;
+                setTheme(next);
+                await new Promise<void>((resolve) => window.setTimeout(resolve, 700));
+                return;
+            }
 
-        overlay.style.backgroundColor = next === 'light' ? '#fafafa' : '#000000';
-        overlay.style.opacity = '1';
-        overlay.style.clipPath = `circle(0px at ${x}px ${y}px)`;
-        overlay.style.display = 'block';
-        void overlay.offsetHeight; // force a reflow so the animation starts from the reset styles
+            const originX = x ?? window.innerWidth / 2;
+            const originY = y ?? window.innerHeight / 2;
+            const radius = Math.ceil(Math.hypot(
+                Math.max(originX, window.innerWidth - originX),
+                Math.max(originY, window.innerHeight - originY)
+            ));
 
-        const expandAnim = overlay.animate(
-            [
-                { clipPath: `circle(0px at ${x}px ${y}px)` },
-                { clipPath: `circle(${maxRadius}px at ${x}px ${y}px)` },
-            ],
-            { duration: 800, easing: 'cubic-bezier(0.22, 0.61, 0.36, 1)' }
-        );
+            root.classList.add('theme-reveal');
+            transition = document.startViewTransition(() => {
+                // Capture React's themed content along with the updated CSS colors.
+                flushSync(() => setTheme(next));
+            });
 
-        const switchTimer = setTimeout(() => {
-            setTheme(next);
-        }, 480);
-
-        expandAnim.onfinish = () => {
-            overlay.style.clipPath = `circle(${maxRadius}px at ${x}px ${y}px)`;
-
-            const fadeAnim = overlay.animate(
-                [{ opacity: '1' }, { opacity: '0' }],
-                { duration: 200, easing: 'ease-out' }
+            await transition.ready;
+            root.animate(
+                {
+                    clipPath: [
+                        `circle(0px at ${originX}px ${originY}px)`,
+                        `circle(${radius}px at ${originX}px ${originY}px)`,
+                    ],
+                },
+                {
+                    duration: 900,
+                    easing: 'cubic-bezier(0.4, 0, 0.2, 1)',
+                    pseudoElement: '::view-transition-new(root)',
+                    fill: 'both',
+                }
             );
-
-            fadeAnim.onfinish = () => {
-                overlay.style.display = 'none';
-                overlay.style.clipPath = '';
-                overlay.style.opacity = '';
-                animatingRef.current = false;
-            };
-        };
-
-        expandAnim.oncancel = () => {
-            clearTimeout(switchTimer);
-            overlay.style.display = 'none';
-            overlay.style.clipPath = '';
-            overlay.style.opacity = '';
+            await transition.finished;
+        } catch {
+            // A hidden tab or interrupted capture must still apply the chosen theme.
+            transition?.skipTransition();
+            setTheme(next);
+        } finally {
+            root.classList.remove('theme-reveal', 'theme-fade');
             animatingRef.current = false;
-        };
+        }
     };
 
     return (
         <ThemeContext.Provider value={{ theme, toggleTheme }}>
             {children}
-            <div
-                ref={overlayRef}
-                style={{
-                    position: 'fixed',
-                    inset: 0,
-                    zIndex: 1,
-                    pointerEvents: 'none',
-                    display: 'none',
-                }}
-            />
         </ThemeContext.Provider>
     );
 }
