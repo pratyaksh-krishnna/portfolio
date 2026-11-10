@@ -1,3 +1,4 @@
+import SwarmLoader from '@/components/SwarmLoader';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
@@ -5,5 +6,10 @@ export const metadata: Metadata = {
 };
 
 export default function PortfolioLayout({ children }: { children: React.ReactNode }) {
-    return children;
+    return (
+        <>
+            {children}
+            <SwarmLoader />
+        </>
+    );
 }

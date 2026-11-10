@@ -6,7 +6,7 @@ import Link from 'next/link';
 // The floating glass nav used on the inner pages (projects, blog).
 export default function FloatingNav() {
     return (
-        <nav aria-label="Main" className="page-enter fixed top-6 left-1/2 -translate-x-1/2 z-50">
+        <nav aria-label="Main" className="page-enter fixed top-6 left-4 md:left-1/2 md:-translate-x-1/2 z-50">
             <div
                 className="flex items-center gap-5 md:gap-7 px-5 md:px-6 py-3 rounded-xl"
                 style={{

@@ -136,6 +136,16 @@ const SKILLS: Skill[] = [
     { name: 'Ollama', icon: SiOllama, category: 'AI' },
 ];
 
+// The "All" tab shows only these core skills to keep it short; every skill still appears under its category tab.
+const FEATURED = new Set([
+    'TypeScript', 'Python', 'JavaScript',
+    'React', 'Next.js', 'Tailwind CSS',
+    'Node.js', 'FastAPI',
+    'PostgreSQL', 'MongoDB', 'Redis', 'Supabase',
+    'Docker', 'AWS',
+    'LangChain', 'LangGraph', 'OpenAI', 'Claude',
+]);
+
 const TABS: { label: 'All' | Category; icon: ComponentType<IconProps> }[] = [
     { label: 'All', icon: LuLayers },
     { label: 'Languages', icon: LuCode },
@@ -159,14 +169,15 @@ export function getSkillIcon(name: string) {
 export default function SkillBadges() {
     const [tab, setTab] = useState<(typeof TABS)[number]['label']>('All');
     const reduceMotion = useReducedMotion();
-    const visible = tab === 'All' ? SKILLS : SKILLS.filter((skill) => skill.category === tab);
+    const visible = tab === 'All' ? SKILLS.filter((skill) => FEATURED.has(skill.name)) : SKILLS.filter((skill) => skill.category === tab);
 
     return (
         <div>
             <div
                 role="group"
                 aria-label="Filter tech stack by category"
-                className="flex gap-1 overflow-x-auto scrollbar-hide rounded-xl border border-theme-card-border bg-theme-card p-1.5"
+                // Phones: tabs wrap onto rows so every category is visible. Wider screens: one scrollable row.
+                className="flex flex-wrap gap-x-0.5 gap-y-1 rounded-2xl p-1.5 md:gap-1 md:flex-nowrap md:overflow-x-auto md:rounded-xl md:p-1.5 scrollbar-hide border border-theme-card-border bg-theme-card"
             >
                 {TABS.map(({ label, icon: Icon }) => {
                     const active = tab === label;
@@ -176,7 +187,7 @@ export default function SkillBadges() {
                             type="button"
                             onClick={() => setTab(label)}
                             aria-pressed={active}
-                            className={`relative flex shrink-0 cursor-pointer items-center gap-2 rounded-lg px-3.5 py-2 text-sm md:text-[15px] whitespace-nowrap transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-theme-primary ${active ? 'text-page' : 'text-theme-secondary hover:text-theme-primary'}`}
+                            className={`relative flex shrink-0 cursor-pointer items-center gap-2 rounded-lg px-3 py-2.5 md:px-3.5 md:py-2 text-sm md:text-[15px] whitespace-nowrap transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-theme-primary ${active ? 'text-page font-semibold md:font-normal' : 'text-theme-secondary hover:text-theme-primary'}`}
                         >
                             {active && (
                                 <motion.span
@@ -193,7 +204,7 @@ export default function SkillBadges() {
                 })}
             </div>
 
-            <ul className="mt-6 md:mt-8 flex flex-wrap gap-2.5 md:gap-3" aria-live="polite">
+            <ul className="mt-7 md:mt-8 flex flex-wrap gap-2.5 md:gap-3" aria-live="polite">
                 <AnimatePresence mode="popLayout" initial={false}>
                     {visible.map((skill) => {
                         const Icon = skill.icon;
@@ -205,7 +216,7 @@ export default function SkillBadges() {
                                 animate={{ opacity: 1, scale: 1 }}
                                 exit={{ opacity: 0, scale: 0.92 }}
                                 transition={{ duration: reduceMotion ? 0 : 0.2, ease: 'easeOut' }}
-                                className="flex items-center gap-2.5 rounded-lg border border-theme-card-border bg-theme-card px-3.5 py-2 text-sm md:text-[15px] text-theme-primary transition-colors duration-200 hover:border-transparent hover:bg-theme-primary hover:text-page"
+                                className="flex items-center gap-2.5 rounded-lg border border-theme-card-border bg-theme-card px-3 py-2.5 md:px-3.5 md:py-2 text-[13px] md:text-[15px] text-theme-primary transition-colors duration-200 hover:border-transparent hover:bg-theme-primary hover:text-page"
                             >
                                 <span className="flex shrink-0" style={skill.color ? { color: skill.color } : undefined} aria-hidden>
                                     <Icon className="h-[18px] w-[18px]" />

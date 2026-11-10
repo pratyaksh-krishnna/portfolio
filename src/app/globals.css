@@ -453,3 +453,10 @@ html.theme-reveal *::after {
   mask-image: linear-gradient(to left, transparent, #000 85%);
   -webkit-mask-image: linear-gradient(to left, transparent, #000 85%);
 }
+
+/* The swarm loading screen is pure motion; skip it for reduced-motion users (before JS runs, too). */
+@media (prefers-reduced-motion: reduce) {
+  .swarm-loader {
+    display: none;
+  }
+}

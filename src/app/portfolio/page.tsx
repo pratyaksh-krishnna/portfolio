@@ -9,7 +9,6 @@ import ProjectCard from '@/components/ProjectCard';
 import RotatingTitle from '@/components/RotatingTitle';
 import SkillBadges from '@/components/SkillBadges';
 import SmoothScroll from '@/components/SmoothScroll';
-import StealthPill from '@/components/StealthPill';
 import NavLinks from '@/components/NavLinks';
 import ThemeToggle from '@/components/ThemeToggle';
 import VisitorCounter from '@/components/VisitorCounter';
@@ -89,10 +88,10 @@ export default function PortfolioPage() {
                     <header className="border-b border-theme-divider">
                         <nav
                             aria-label="Main"
-                            className="plus-marks max-w-6xl mx-auto border-x border-theme-divider bg-page h-14 md:h-16 px-6 md:px-16 grid grid-cols-[1fr_auto_1fr] items-center gap-4"
+                            className="plus-marks max-w-6xl mx-auto border-x border-theme-divider bg-page h-14 md:h-16 px-6 md:px-16 grid grid-cols-[auto_1fr] md:grid-cols-[1fr_auto_1fr] items-center gap-4"
                         >
-                            {/* Links sit in the true centre; the empty first column balances the controls on the right. */}
-                            <span aria-hidden />
+                            {/* Phones: links on the left. Desktop: links in the true centre, the empty first column balancing the controls on the right. */}
+                            <span aria-hidden className="hidden md:block" />
                             <NavLinks />
                             <div className="flex items-center justify-end gap-3">
                                 <VisitorCounter />
@@ -101,10 +100,7 @@ export default function PortfolioPage() {
                         </nav>
                     </header>
 
-                    <Row className="px-6 md:px-16 pt-16 pb-12 md:pb-20">
-                        <div className="absolute top-5 left-6 md:hidden">
-                            <StealthPill />
-                        </div>
+                    <Row className="px-6 md:px-16 pt-8 md:pt-16 pb-12 md:pb-20">
                         <section id="about">
                             {/* Phones: photo booth, then text, then resume/socials. Desktop: text on the left, booth and resume/socials stacked on the right. */}
                             <div className="grid gap-10 lg:grid-cols-[minmax(0,1fr)_minmax(0,380px)] lg:grid-rows-[auto_1fr] lg:gap-x-14 lg:gap-y-4 items-start">
