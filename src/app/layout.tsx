@@ -106,7 +106,8 @@ export default function RootLayout({
       <body className={`${geistMono.variable} ${jetbrainsMono.variable} ${instrumentSerif.variable} antialiased`}>
         <script
           dangerouslySetInnerHTML={{
-            __html: `(function(){try{var t=localStorage.getItem('theme');if(t==='light')document.documentElement.classList.add('light')}catch(e){}})()`,
+            // Applies the saved theme, and hides the swarm intro (SwarmLoader) if it already played this visit, before first paint.
+            __html: `(function(){var d=document.documentElement;try{var t=localStorage.getItem('theme');if(t==='light')d.classList.add('light')}catch(e){}try{if(sessionStorage.getItem('swarm-intro-seen'))d.classList.add('swarm-seen')}catch(e){}})()`,
           }}
         />
         <script

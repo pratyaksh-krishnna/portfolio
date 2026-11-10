@@ -51,6 +51,10 @@ const T = {
     fade: 3250,
     done: 3750,
 };
+// Plays once per visit (browser session). Keep these in sync with the inline script in app/layout.tsx.
+const SEEN_KEY = 'swarm-intro-seen';
+const SEEN_CLASS = 'swarm-seen';
+
 // If the page still hasn't fired `load` by the end of the fill, wait at most this long for it.
 const MAX_WAIT_FOR_LOAD_MS = 4000;
 
@@ -352,18 +356,27 @@ export default function SwarmLoader() {
         const root = document.documentElement;
         const prevOverflow = root.style.overflow;
         const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        // Already played this visit: the inline script in the root layout has hidden the overlay before paint.
+        const skipIntro = reduceMotion || root.classList.contains(SEEN_CLASS);
         let start = performance.now();
         let loaded = document.readyState === 'complete';
         let waitStart = 0;
         let raf = 0;
         let finished = false;
 
-        if (!reduceMotion) root.style.overflow = 'hidden';
+        if (!skipIntro) root.style.overflow = 'hidden';
 
         const finish = () => {
             if (finished) return;
             finished = true;
             root.style.overflow = prevOverflow;
+            // Marked when it ends, not when it starts, so React's dev-mode effect re-run still plays it.
+            if (!skipIntro) {
+                try {
+                    sessionStorage.setItem(SEEN_KEY, '1');
+                } catch { }
+                root.classList.add(SEEN_CLASS);
+            }
             setDone(true);
         };
 
@@ -379,7 +392,7 @@ export default function SwarmLoader() {
         window.addEventListener('keydown', skip);
 
         const tick = (now: number) => {
-            if (reduceMotion) return finish();
+            if (skipIntro) return finish();
             let t = now - start;
             // Hold at a full-ish bar until the page has actually loaded.
             if (!loaded && t > T.fillEnd) {

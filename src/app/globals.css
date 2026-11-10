@@ -454,7 +454,11 @@ html.theme-reveal *::after {
   -webkit-mask-image: linear-gradient(to left, transparent, #000 85%);
 }
 
-/* The swarm loading screen is pure motion; skip it for reduced-motion users (before JS runs, too). */
+/* The swarm loading screen plays once per visit, and never for reduced-motion users (both hidden before JS runs). */
+.swarm-seen .swarm-loader {
+  display: none;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .swarm-loader {
     display: none;
