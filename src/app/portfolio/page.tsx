@@ -1,6 +1,5 @@
 'use client';
 
-import AgeCounter from '@/components/AgeCounter';
 import BlogCard from '@/components/BlogCard';
 import ExperienceTimeline from '@/components/ExperienceTimeline';
 import FlipName from '@/components/FlipName';
@@ -11,22 +10,18 @@ import RotatingTitle from '@/components/RotatingTitle';
 import SkillBadges from '@/components/SkillBadges';
 import SmoothScroll from '@/components/SmoothScroll';
 import StealthPill from '@/components/StealthPill';
+import NavLinks from '@/components/NavLinks';
 import ThemeToggle from '@/components/ThemeToggle';
 import VisitorCounter from '@/components/VisitorCounter';
 import { blogs } from '@/data/blogs';
 import { experience } from '@/data/experience';
 import { projects } from '@/data/projects';
-import Image from 'next/image';
 import Link from 'next/link';
 import { type ReactNode } from 'react';
 
 const CALENDLY_URL = 'https://calendly.com/pratyaksh-krish/30min';
 const RESUME_URL = '/resume.pdf';
-const BOOTH_PHOTOS = [
-    { src: '/images/booth/dublin.webp', alt: 'Pratyaksh on a street lit with holiday lights at night', position: '50% 60%', zoom: 1.3, focus: '45% 62%' },
-    { src: '/images/booth/mountains.webp', alt: 'Pratyaksh standing on a rock above green hills', position: '50% 62%', thumbPosition: '50% 0%' },
-    { src: '/images/booth/valley.webp', alt: 'Pratyaksh looking out over a mountain valley', position: '50% 62%' },
-];
+const BOOTH_PHOTO = { src: '/images/booth/dublin.webp', alt: 'Pratyaksh on a street lit with holiday lights at night', position: '50% 60%', zoom: 1.3, focus: '45% 62%' };
 const PILL_BUTTON = 'inline-flex items-center gap-2 rounded-full border border-theme-badge-border hover:border-theme-card-hover-border bg-theme-badge-bg hover:bg-theme-card-hover px-4 py-2 md:px-5 md:py-2.5 text-sm md:text-base text-theme-primary hover:text-theme-icon-hover shadow-[var(--theme-action-shadow)] hover:shadow-[var(--theme-action-hover-shadow)] transition duration-300 ease-[cubic-bezier(0.32,0.72,0,1)] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-theme-primary';
 const SOCIAL_LINK = 'inline-flex h-9 w-9 items-center justify-center rounded-full border border-theme-divider bg-page/80 text-theme-secondary hover:text-theme-icon-hover hover:border-theme-card-hover-border hover:bg-theme-card-hover hover:-translate-y-0.5 transition duration-300 ease-[cubic-bezier(0.32,0.72,0,1)] motion-reduce:transform-none focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-theme-primary';
 
@@ -38,10 +33,28 @@ function Row({ children, className = '' }: { children: ReactNode; className?: st
     );
 }
 
-function Band({ className = 'h-12 md:h-16', children }: { className?: string; children?: ReactNode }) {
+// A thin divider band: the dot grid in the side gutters, the content column left plain.
+function DotBand() {
     return (
-        <div className="border-b border-theme-divider">
-            <div className={`plus-marks max-w-6xl mx-auto border-x border-theme-divider ${className}`}>{children}</div>
+        <div aria-hidden className="band-dots border-b border-theme-divider">
+            <div className="plus-marks max-w-6xl mx-auto border-x border-theme-divider bg-page h-9" />
+        </div>
+    );
+}
+
+// Opens a section: a plain heading row inside the column, with the dot grid only in the side gutters.
+function SectionHeader({ title, aside }: { title: string; aside?: ReactNode }) {
+    return (
+        <div className="band-dots border-b border-theme-divider">
+            <div className="plus-marks max-w-6xl mx-auto border-x border-theme-divider bg-page px-6 md:px-16 py-4 md:py-5 flex items-baseline justify-between gap-4">
+                <h2
+                    className="section-heading text-theme-primary"
+                    style={{ fontFamily: "var(--font-geist-mono), 'Geist Mono', monospace", fontWeight: 600 }}
+                >
+                    {title}
+                </h2>
+                {aside && <p className="hidden sm:block text-xs md:text-sm tracking-wide text-theme-faint">{aside}</p>}
+            </div>
         </div>
     );
 }
@@ -65,25 +78,32 @@ function ViewAllLink({ href }: { href: string }) {
 export default function PortfolioPage() {
     const headingFont = { fontFamily: "var(--font-geist-mono), 'Geist Mono', monospace", fontWeight: 600 };
     const geistMonoFont = { fontFamily: "var(--font-geist-mono), 'Geist Mono', monospace" };
+    const quoteFont = { fontFamily: "var(--font-instrument-serif), 'Instrument Serif', Georgia, serif" };
 
     return (
         <SmoothScroll>
             <div className="min-h-screen text-page-text overflow-x-clip relative z-[2]" style={geistMonoFont}>
-                <div aria-hidden className="fixed inset-0 -z-10 bg-cover bg-center will-change-transform" style={{ backgroundImage: 'url(/images/background-ocean.webp)' }} />
+                <div aria-hidden className="fixed inset-0 -z-10 bg-page" />
                 <main className="page-enter relative">
 
-                    {/* Thin desktop top band so the corner plus marks show above the hero row. */}
-                    <div className="hidden md:block">
-                        <Band className="h-6" />
-                    </div>
+                    <header className="border-b border-theme-divider">
+                        <nav
+                            aria-label="Main"
+                            className="plus-marks max-w-6xl mx-auto border-x border-theme-divider bg-page h-14 md:h-16 px-6 md:px-16 grid grid-cols-[1fr_auto_1fr] items-center gap-4"
+                        >
+                            {/* Links sit in the true centre; the empty first column balances the controls on the right. */}
+                            <span aria-hidden />
+                            <NavLinks />
+                            <div className="flex items-center justify-end gap-3">
+                                <VisitorCounter />
+                                <ThemeToggle />
+                            </div>
+                        </nav>
+                    </header>
 
-                    <Row className="px-6 md:px-16 pt-20 pb-12 md:pt-24 md:pb-20">
+                    <Row className="px-6 md:px-16 pt-16 pb-12 md:pb-20">
                         <div className="absolute top-5 left-6 md:hidden">
                             <StealthPill />
-                        </div>
-                        <div className="absolute top-5 right-6 md:top-7 md:right-16 flex items-center gap-3">
-                            <VisitorCounter />
-                            <ThemeToggle />
                         </div>
                         <section id="about">
                             {/* Phones: photo booth, then text, then resume/socials. Desktop: text on the left, booth and resume/socials stacked on the right. */}
@@ -95,7 +115,6 @@ export default function PortfolioPage() {
                                         style={headingFont}
                                     />
                                     <RotatingTitle />
-                                    <AgeCounter />
                                     <h2 className="section-heading mt-8 md:mt-10 leading-snug text-theme-primary" style={headingFont}>
                                         Building AI-native products, from prototype to production.
                                     </h2>
@@ -124,7 +143,7 @@ export default function PortfolioPage() {
                                     </div>
                                 </div>
                                 <div className="order-first mx-auto w-[85%] sm:w-full lg:order-none lg:col-start-2 lg:row-start-1">
-                                    <PhotoBooth photos={BOOTH_PHOTOS} />
+                                    <PhotoBooth photo={BOOTH_PHOTO} />
                                 </div>
                                 <div className="lg:col-start-2 lg:row-start-2">
                                     <div className="flex items-center justify-between gap-3">
@@ -159,82 +178,67 @@ export default function PortfolioPage() {
                         </section>
                     </Row>
 
-                    <Band />
-
-                    <Row className="px-6 md:px-16 py-12 md:py-16">
-                        <section id="experience">
-                            <h2 className="section-heading mb-7 md:mb-9" style={headingFont}>Experience</h2>
+                    <section id="experience">
+                        <SectionHeader title="Experience" />
+                        <Row className="px-6 md:px-16 py-10 md:py-14">
                             <ExperienceTimeline items={experience} />
-                        </section>
-                    </Row>
+                        </Row>
+                    </section>
 
-                    <Band />
-
-                    <Row className="px-6 md:px-16 py-12 md:py-16">
-                        <h2 className="section-heading mb-7 md:mb-9" style={headingFont}>Skills</h2>
-                        <SkillBadges />
-                    </Row>
-
-                    <Band />
-
-                    <Row className="px-6 md:px-16 py-12 md:py-16">
-                        <section id="projects">
-                            <h2 className="section-heading mb-7 md:mb-9" style={headingFont}>Projects</h2>
+                    <section id="projects">
+                        <SectionHeader title="Projects" />
+                        <Row className="px-6 md:px-16 py-10 md:py-14">
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                                 {projects.slice(0, 2).map((project) => (
                                     <ProjectCard key={project.id} project={project} />
                                 ))}
                             </div>
                             <ViewAllLink href="/portfolio/projects" />
-                        </section>
-                    </Row>
+                        </Row>
+                    </section>
+
+                    <section id="skills">
+                        <SectionHeader title="Tech Stack" aside="( select tab to filter )" />
+                        <Row className="px-6 md:px-16 py-10 md:py-14">
+                            <SkillBadges />
+                        </Row>
+                    </section>
 
                     {blogs.length > 0 && (
-                        <>
-                            <Band />
-
-                            <Row className="px-6 md:px-16 py-12 md:py-16">
-                                <section id="blog">
-                                    <h2 className="section-heading mb-7 md:mb-9" style={headingFont}>Blogs</h2>
-                                    <div className="space-y-4">
-                                        {blogs.map((blog) => (
-                                            <BlogCard key={blog.id} blog={blog} />
-                                        ))}
-                                    </div>
-                                </section>
+                        <section id="blog">
+                            <SectionHeader title="Blogs" />
+                            <Row className="px-6 md:px-16 py-10 md:py-14">
+                                <div className="space-y-4">
+                                    {blogs.map((blog) => (
+                                        <BlogCard key={blog.id} blog={blog} />
+                                    ))}
+                                </div>
                             </Row>
-                        </>
+                        </section>
                     )}
 
-                    <Band />
-
-                    <Row>
-                        <div className="relative">
-                            <div
-                                className="absolute inset-0 pointer-events-none z-10"
-                                style={{
-                                    background: `linear-gradient(to bottom, var(--theme-gradient-overlay) 0%, transparent 30%, transparent 70%, var(--theme-gradient-overlay) 100%)`
-                                }}
-                            />
-                            <Image
-                                src="/images/vagabond-mountains.jpg"
-                                alt="Vagabond - Mountains"
-                                width={1024}
-                                height={576}
-                                sizes="(min-width: 1152px) 1152px, 100vw"
-                                className="w-full h-56 md:h-80 object-cover object-center opacity-60"
-                            />
-                            <p
-                                className="absolute bottom-4 left-1/2 -translate-x-1/2 text-theme-muted text-lg tracking-wider z-20 whitespace-nowrap"
-                                style={{ fontFamily: "var(--font-dancing), 'Dancing Script', cursive" }}
-                            >
-                                &ldquo;inside, i&apos;m infinite&rdquo;
-                            </p>
-                        </div>
+                    <DotBand />
+                    <Row className="px-6 md:px-16 py-16 md:py-24">
+                        <figure className="text-center" style={quoteFont}>
+                            <span aria-hidden className="block text-4xl md:text-5xl leading-none text-theme-faint">&ldquo;</span>
+                            <blockquote className="mt-1 text-3xl md:text-[2.75rem] leading-tight italic text-theme-muted">
+                                inside, i&apos;m infinite.
+                            </blockquote>
+                        </figure>
                     </Row>
-
-                    <Band className="h-20 md:h-28" />
+                    <DotBand />
                 </main>
+
+                <footer>
+                    <Row className="px-6 md:px-16 py-10 md:py-12 text-center">
+                        <p className="text-sm md:text-base text-theme-secondary">
+                            Designed &amp; Developed by <span className="font-semibold text-theme-primary">Pratyaksh Krishnna</span>
+                        </p>
+                        <p className="mt-2 text-xs md:text-sm text-theme-faint" suppressHydrationWarning>
+                            &copy; {new Date().getFullYear()} All rights reserved.
+                        </p>
+                    </Row>
+                </footer>
             </div>
         </SmoothScroll>
     );

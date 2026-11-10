@@ -1,6 +1,6 @@
 import ThemeProvider from "@/components/ThemeProvider";
 import type { Metadata } from "next";
-import { Dancing_Script, Geist_Mono, JetBrains_Mono } from "next/font/google";
+import { Geist_Mono, Instrument_Serif, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 
 const geistMono = Geist_Mono({
@@ -16,12 +16,13 @@ const jetbrainsMono = JetBrains_Mono({
   weight: ["400", "500"],
 });
 
-const dancingScript = Dancing_Script({
+// Footer quote.
+const instrumentSerif = Instrument_Serif({
   subsets: ["latin"],
-  variable: "--font-dancing",
+  variable: "--font-instrument-serif",
   display: "swap",
-  preload: true,
-  weight: ["400", "500", "600", "700"],
+  weight: "400",
+  style: "italic",
 });
 
 const SITE_URL = "https://www.pratyakshworks.com";
@@ -102,7 +103,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={`${geistMono.variable} ${jetbrainsMono.variable} ${dancingScript.variable} antialiased`}>
+      <body className={`${geistMono.variable} ${jetbrainsMono.variable} ${instrumentSerif.variable} antialiased`}>
         <script
           dangerouslySetInnerHTML={{
             __html: `(function(){try{var t=localStorage.getItem('theme');if(t==='light')document.documentElement.classList.add('light')}catch(e){}})()`,

@@ -1,12 +1,36 @@
 'use client';
 
+import { useEffect, useRef } from 'react';
 import { useTheme } from './ThemeProvider';
 
 export default function ThemeToggle() {
-    const { theme, toggleTheme } = useTheme();
+    const { theme, locked, toggleTheme } = useTheme();
     const isLight = theme === 'light';
+    const buttonRef = useRef<HTMLButtonElement>(null);
+    const pointerRef = useRef<{ x: number; y: number } | null>(null);
+
+    // During the reveal the browser hit-tests its transition overlay as <html>, so the button's own
+    // not-allowed cursor can't show. While locked, put that cursor on <html> whenever the pointer is over the toggle.
+    useEffect(() => {
+        if (!locked) return;
+        const root = document.documentElement;
+        const update = (x: number, y: number) => {
+            const r = buttonRef.current?.getBoundingClientRect();
+            const over = !!r && x >= r.left && x <= r.right && y >= r.top && y <= r.bottom;
+            root.style.cursor = over ? 'not-allowed' : '';
+        };
+        const onMove = (e: PointerEvent) => update(e.clientX, e.clientY);
+        if (pointerRef.current) update(pointerRef.current.x, pointerRef.current.y);
+        document.addEventListener('pointermove', onMove);
+        return () => {
+            document.removeEventListener('pointermove', onMove);
+            root.style.cursor = '';
+        };
+    }, [locked]);
 
     const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+        pointerRef.current = { x: e.clientX, y: e.clientY };
+        if (locked) return;
         const rect = e.currentTarget.getBoundingClientRect();
         const x = rect.left + rect.width / 2;
         const y = rect.top + rect.height / 2;
@@ -15,10 +39,12 @@ export default function ThemeToggle() {
 
     return (
         <button
+            ref={buttonRef}
             onClick={handleClick}
-            className="relative w-8 h-8 flex items-center justify-center rounded-lg text-theme-secondary hover:text-theme-primary transition-all duration-300 motion-reduce:transition-none hover:bg-theme-card cursor-pointer"
+            className={`relative w-8 h-8 flex items-center justify-center rounded-lg text-theme-secondary transition-all duration-300 motion-reduce:transition-none ${locked ? 'cursor-not-allowed' : 'cursor-pointer hover:text-theme-primary hover:bg-theme-card'}`}
             aria-label={`Switch to ${isLight ? 'dark' : 'light'} mode`}
-            title={`Switch to ${isLight ? 'dark' : 'light'} mode`}
+            aria-disabled={locked}
+            title={locked ? 'One switch every 2 seconds' : `Switch to ${isLight ? 'dark' : 'light'} mode`}
         >
             <svg
                 className={`w-[18px] h-[18px] absolute transition-all duration-500 motion-reduce:transition-none ${isLight ? 'opacity-0 rotate-90 scale-50' : 'opacity-100 rotate-0 scale-100'

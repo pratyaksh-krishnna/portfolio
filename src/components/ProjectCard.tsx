@@ -5,7 +5,6 @@ import Image from 'next/image';
 import { useRef, type MouseEvent } from 'react';
 import { FaGithub } from 'react-icons/fa';
 import { FiArrowUpRight } from 'react-icons/fi';
-import GlowingEffect, { type GlowPalette } from './GlowingEffect';
 import { getSkillIcon } from './SkillBadges';
 
 export interface Project {
@@ -29,8 +28,6 @@ interface ProjectCardProps {
     compact?: boolean;
 }
 
-// Monochrome border glow, white through to black.
-const GLOW_COLORS: GlowPalette = ['#ffffff', '#a3a3a3', '#404040', '#000000'];
 const linkHover = 'hover:border-blue-500/50 hover:bg-blue-500/10 hover:text-blue-400';
 
 const linkButton = 'inline-flex items-center gap-1.5 rounded-md border border-theme-badge-border bg-theme-badge-bg px-2 py-1 text-xs font-medium text-theme-badge-text transition-colors';
@@ -109,7 +106,6 @@ export default function ProjectCard({ project, compact = false }: ProjectCardPro
 
     return (
         <div className="group relative h-full rounded-xl" onMouseMove={handleMouseMove} onMouseLeave={resetFollow}>
-            <GlowingEffect spread={40} proximity={64} inactiveZone={0.01} borderWidth={2} colors={GLOW_COLORS} />
             <div className={`relative flex h-full flex-col rounded-xl border border-theme-card-border bg-theme-card ${cardPadding} transition-colors duration-300 group-hover:border-theme-card-hover-border`}>
                 <div ref={boxRef} className="relative aspect-[16/10] overflow-hidden rounded-lg bg-neutral-200/70 dark:bg-neutral-950">
                     <div className={`absolute inset-0 ${GRID_LINES} [mask-image:radial-gradient(ellipse_90%_90%_at_50%_50%,black_20%,transparent_80%)]`} aria-hidden />
